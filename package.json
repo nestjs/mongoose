@@ -1,0 +1,20 @@
+{
+  "name": "@nestjs/mongoose",
+  "version": "1.0.1",
+  "description": "Nest - modern, fast, powerful node.js web framework (@mongoose)",
+  "author": "Kamil Mysliwiec",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^4.3.0",
+    "mongoose": "^4.11.13",
+    "typescript": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^4.7.23",
+    "@types/node": "^7.0.41",
+    "ts-node": "^3.3.0"
+  }
+}
