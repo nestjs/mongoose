@@ -34,7 +34,7 @@ $ npm i --save @nestjs/mongoose mongoose
 
 ## Quick Start
 
-[Overview & Tutorial - COMING SOON](https://docs.nestjs.com/techniques/nosql)
+[Overview & Tutorial](https://docs.nestjs.com/techniques/mongodb)
 
 ## People
 

@@ -12,6 +12,7 @@
             "named-imports-order": "any"
         }],
         "no-console": [false],
+        "member-access": false,
         "interface-name": [true, "never-prefix"],
         "eofline": false,
         "linebreak-style": [
