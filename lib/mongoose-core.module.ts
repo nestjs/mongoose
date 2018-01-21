@@ -1,4 +1,3 @@
-
 import * as mongoose from 'mongoose';
 import { Module, DynamicModule, Global } from '@nestjs/common';
 
@@ -7,14 +6,12 @@ import { Module, DynamicModule, Global } from '@nestjs/common';
 export class MongooseCoreModule {
   static forRoot(
     uri: string,
-    options: mongoose.ConnectionOptions = { useMongoClient: true },
+    options: mongoose.ConnectionOptions = {},
   ): DynamicModule {
     const connectionProvider = {
       provide: 'DbConnectionToken',
-      useFactory: async (): Promise<mongoose.Connection> => {
-        (mongoose as any).Promise = global.Promise;
-        return await mongoose.connect(uri, options);
-      },
+      useFactory: async (): Promise<mongoose.Connection> =>
+        await mongoose.connect(uri, options),
     };
     return {
       module: MongooseCoreModule,

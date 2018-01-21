@@ -8,7 +8,7 @@ import { MongooseCoreModule } from './mongoose-core.module';
 export class MongooseModule {
   static forRoot(
     uri: string,
-    options: mongoose.ConnectionOptions = { useMongoClient: true },
+    options: mongoose.ConnectionOptions = {},
   ): DynamicModule {
     return {
       module: MongooseModule,
