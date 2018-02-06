@@ -3,5 +3,5 @@ import { Inject } from '@nestjs/common';
 
 import { getModelToken } from './mongoose.utils';
 
-export const InjectModel = (model: mongoose.Schema) =>
+export const InjectModel = (model: string) =>
   Inject(getModelToken(model));
