@@ -1,0 +1,13 @@
+{
+  "name": "@nestjs/mongoose",
+  "version": "3.0.1",
+  "description":
+    "Nest - modern, fast, powerful node.js web framework (@mongoose)",
+  "author": "Kamil Mysliwiec",
+  "license": "MIT",
+  "peerDependencies": {
+    "@nestjs/common": "^5.*",
+    "mongoose": "^5.0.1",
+    "rxjs": "^5.5.8"
+  }
+}
