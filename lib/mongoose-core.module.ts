@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { Module, DynamicModule, Global } from '@nestjs/common';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import { fromPromise } from 'rxjs';
 import { handleRetry } from './mongoose.utils';
 
 @Global()
@@ -12,12 +12,12 @@ export class MongooseCoreModule {
       useFactory: async (): Promise<any> =>
         await fromPromise(mongoose.connect(uri, options))
           .pipe(handleRetry)
-          .toPromise()
+          .toPromise(),
     };
     return {
       module: MongooseCoreModule,
       providers: [connectionProvider],
-      exports: [connectionProvider]
+      exports: [connectionProvider],
     };
   }
 }

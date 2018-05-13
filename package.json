@@ -1,8 +1,7 @@
 {
   "name": "@nestjs/mongoose",
   "version": "3.0.1",
-  "description":
-    "Nest - modern, fast, powerful node.js web framework (@mongoose)",
+  "description": "Nest - modern, fast, powerful node.js web framework (@mongoose)",
   "author": "Kamil Mysliwiec",
   "license": "MIT",
   "scripts": {
@@ -30,5 +29,8 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "rxjs": "^6.1.0"
   }
 }

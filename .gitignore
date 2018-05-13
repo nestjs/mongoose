@@ -14,6 +14,9 @@ npm-debug.log
 /test
 /coverage
 /.nyc_output
+<<<<<<< HEAD
 
 # dist
 dist
+=======
+>>>>>>> 94699255e1f58ee61cca85ff4264fdfdcecbf18c
