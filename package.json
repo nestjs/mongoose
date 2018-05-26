@@ -1,6 +1,6 @@
 {
   "name": "@nestjs/mongoose",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Nest - modern, fast, powerful node.js web framework (@mongoose)",
   "author": "Kamil Mysliwiec",
   "license": "MIT",
@@ -8,7 +8,9 @@
     "build": "tsc -p tsconfig.json",
     "precommit": "lint-staged",
     "prepublish:npm": "npm run build",
-    "publish:npm": "npm publish --access public"
+    "publish:npm": "npm publish --access public",
+    "prepublish:next": "npm run build",
+    "publish:next": "npm publish --access public --tag next"
   },
   "devDependencies": {
     "@types/node": "^7.0.41",
