@@ -3,6 +3,7 @@
   "version": "4.0.1",
   "description": "Nest - modern, fast, powerful node.js web framework (@mongoose)",
   "author": "Kamil Mysliwiec",
+  "repository": "https://github.com/nestjs/mongoose.git",
   "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.json",
