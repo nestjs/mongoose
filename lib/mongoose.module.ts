@@ -1,11 +1,15 @@
-import { Module, DynamicModule, Global } from '@nestjs/common';
-
-import { createMongooseProviders } from './mongoose.providers';
+import { DynamicModule, Module } from '@nestjs/common';
+import { MongooseModuleOptions } from './interfaces/mongoose-options.interface';
 import { MongooseCoreModule } from './mongoose-core.module';
+import { DefaultDbConnectionToken } from './mongoose.constants';
+import { createMongooseProviders } from './mongoose.providers';
 
 @Module({})
 export class MongooseModule {
-  static forRoot(uri: string, options: any = {}): DynamicModule {
+  static forRoot(
+    uri: string,
+    options: MongooseModuleOptions = {},
+  ): DynamicModule {
     return {
       module: MongooseModule,
       imports: [MongooseCoreModule.forRoot(uri, options)],
@@ -14,8 +18,9 @@ export class MongooseModule {
 
   static forFeature(
     models: { name: string; schema: any }[] = [],
+    connectionName: string = DefaultDbConnectionToken,
   ): DynamicModule {
-    const providers = createMongooseProviders(models);
+    const providers = createMongooseProviders(connectionName, models);
     return {
       module: MongooseModule,
       providers: providers,

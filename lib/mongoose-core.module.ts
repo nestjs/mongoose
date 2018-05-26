@@ -1,7 +1,8 @@
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import * as mongoose from 'mongoose';
-import { from } from 'rxjs';
+import { of } from 'rxjs';
 import { MongooseModuleOptions } from './interfaces/mongoose-options.interface';
+import { DefaultDbConnectionToken } from './mongoose.constants';
 import { handleRetry } from './mongoose.utils';
 
 @Global()
@@ -11,12 +12,17 @@ export class MongooseCoreModule {
     uri: string,
     options: MongooseModuleOptions = {},
   ): DynamicModule {
-    const { retryAttempts, retryDelay, ...mongooseOptions } = options;
+    const {
+      retryAttempts,
+      retryDelay,
+      connectionName,
+      ...mongooseOptions
+    } = options;
 
     const connectionProvider = {
-      provide: 'DbConnectionToken',
+      provide: connectionName || DefaultDbConnectionToken,
       useFactory: async (): Promise<any> =>
-        await from(mongoose.connect(uri, mongooseOptions as any))
+        await of(mongoose.createConnection(uri, mongooseOptions as any))
           .pipe(handleRetry(retryAttempts, retryDelay))
           .toPromise(),
     };
