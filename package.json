@@ -1,6 +1,6 @@
 {
   "name": "@nestjs/mongoose",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "Nest - modern, fast, powerful node.js web framework (@mongoose)",
   "author": "Kamil Mysliwiec",
   "repository": "https://github.com/nestjs/mongoose.git",
@@ -23,6 +23,12 @@
     "typescript": "^2.8.0"
   },
   "peerDependencies": {
+    "@nestjs/common": "^5.0.0",
+    "mongoose": "^5.0.1",
+    "reflect-metadata": "^0.1.12",
+    "rxjs": "^6.0.0"
+  },
+  "optionalDependencies": {
     "@nestjs/common": "^5.0.0",
     "mongoose": "^5.0.1",
     "reflect-metadata": "^0.1.12",
