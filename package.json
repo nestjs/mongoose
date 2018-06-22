@@ -14,11 +14,12 @@
     "publish:next": "npm publish --access public --tag next"
   },
   "devDependencies": {
-    "@types/node": "^7.0.41",
     "@types/mongoose": "^5.0.7",
+    "@types/node": "^7.0.41",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",
     "prettier": "^1.11.1",
+    "rxjs-compat": "^6.2.1",
     "ts-node": "^3.3.0",
     "typescript": "^2.8.0"
   },
