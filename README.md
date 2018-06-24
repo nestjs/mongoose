@@ -26,7 +26,7 @@
 
 ## Description
 
-This is a [Mongoose](http://mongoosejs.com/) module for [Nest](https://github.com/nestjs/nest).
+The [Mongoose](http://mongoosejs.com/) module for [Nest](https://github.com/nestjs/nest).
 
 ## Installation
 
