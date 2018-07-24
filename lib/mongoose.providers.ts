@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-
 import { DefaultDbConnectionToken } from './mongoose.constants';
 import { getModelToken } from './mongoose.utils';
 

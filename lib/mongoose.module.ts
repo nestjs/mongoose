@@ -8,7 +8,9 @@ import { createMongooseProviders } from './mongoose.providers';
 export class MongooseModule {
   static forRoot(
     uri: string,
-    options: MongooseModuleOptions = {},
+    options: MongooseModuleOptions = {
+      useNewUrlParser: true,
+    },
   ): DynamicModule {
     return {
       module: MongooseModule,
