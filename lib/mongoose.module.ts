@@ -19,7 +19,7 @@ export class MongooseModule {
   }
 
   static forFeature(
-    models: { name: string; schema: any }[] = [],
+    models: { name: string; schema: any; collection?: string }[] = [],
     connectionName: string = DefaultDbConnectionToken,
   ): DynamicModule {
     const providers = createMongooseProviders(connectionName, models);
