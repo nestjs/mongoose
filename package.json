@@ -1,12 +1,13 @@
 {
   "name": "@nestjs/mongoose",
-  "version": "5.1.0",
-  "description": "Nest - modern, fast, powerful node.js web framework (@mongoose)",
+  "version": "5.2.0",
+  "description":
+    "Nest - modern, fast, powerful node.js web framework (@mongoose)",
   "author": "Kamil Mysliwiec",
   "repository": "https://github.com/nestjs/mongoose.git",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
     "precommit": "lint-staged",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
@@ -36,9 +37,6 @@
     "rxjs": "^6.0.0"
   },
   "lint-staged": {
-    "*.ts": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.ts": ["prettier --write", "git add"]
   }
 }

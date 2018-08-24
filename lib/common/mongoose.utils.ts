@@ -6,6 +6,10 @@ export function getModelToken(model: string) {
   return `${model}Model`;
 }
 
+export function getConnectionToken(name: string) {
+  return `${name}Connection`;
+}
+
 export function handleRetry(
   retryAttempts = 9,
   retryDelay = 3000,

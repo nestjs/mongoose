@@ -1,16 +1,17 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { MongooseModuleOptions } from './interfaces/mongoose-options.interface';
+import {
+  MongooseModuleAsyncOptions,
+  MongooseModuleOptions,
+} from './interfaces/mongoose-options.interface';
 import { MongooseCoreModule } from './mongoose-core.module';
-import { DefaultDbConnectionToken } from './mongoose.constants';
+import { DEFAULT_DB_CONNECTION } from './mongoose.constants';
 import { createMongooseProviders } from './mongoose.providers';
 
 @Module({})
 export class MongooseModule {
   static forRoot(
     uri: string,
-    options: MongooseModuleOptions = {
-      useNewUrlParser: true,
-    },
+    options: MongooseModuleOptions = {},
   ): DynamicModule {
     return {
       module: MongooseModule,
@@ -18,9 +19,16 @@ export class MongooseModule {
     };
   }
 
+  static forRootAsync(options: MongooseModuleAsyncOptions): DynamicModule {
+    return {
+      module: MongooseModule,
+      imports: [MongooseCoreModule.forRootAsync(options)],
+    };
+  }
+
   static forFeature(
     models: { name: string; schema: any; collection?: string }[] = [],
-    connectionName: string = DefaultDbConnectionToken,
+    connectionName: string = DEFAULT_DB_CONNECTION,
   ): DynamicModule {
     const providers = createMongooseProviders(connectionName, models);
     return {

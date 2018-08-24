@@ -1,3 +1,3 @@
-export * from './mongoose.decorators';
+export * from './common';
+export * from './interfaces';
 export * from './mongoose.module';
-export * from './mongoose.utils';
