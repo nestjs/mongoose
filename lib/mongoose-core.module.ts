@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import * as mongoose from 'mongoose';
-import { of } from 'rxjs';
+import { defer } from 'rxjs';
 import { getConnectionToken, handleRetry } from './common/mongoose.utils';
 import {
   MongooseModuleAsyncOptions,
@@ -50,7 +50,9 @@ export class MongooseCoreModule {
     const connectionProvider = {
       provide: mongooseConnectionName,
       useFactory: async (): Promise<any> =>
-        await of(mongoose.createConnection(uri, mongooseOptions as any))
+        await defer(async () =>
+          mongoose.createConnection(uri, mongooseOptions as any),
+        )
           .pipe(handleRetry(retryAttempts, retryDelay))
           .toPromise(),
     };
@@ -84,7 +86,7 @@ export class MongooseCoreModule {
           ...mongooseOptions
         } = mongooseModuleOptions;
 
-        return await of(
+        return await defer(async () =>
           mongoose.createConnection(
             mongooseModuleOptions.uri,
             mongooseOptions as any,
