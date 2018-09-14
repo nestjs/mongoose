@@ -39,6 +39,8 @@ export class MongooseCoreModule {
       ...mongooseOptions
     } = options;
 
+    mongoose.set('useCreateIndex', true);
+
     const mongooseConnectionName = connectionName
       ? getConnectionToken(connectionName)
       : DEFAULT_DB_CONNECTION;
@@ -86,18 +88,11 @@ export class MongooseCoreModule {
           ...mongooseOptions
         } = mongooseModuleOptions;
 
+        mongoose.set('useCreateIndex', true);
         return await defer(async () =>
-          mongoose.createConnection(
-            mongooseModuleOptions.uri,
-            mongooseOptions as any,
-          ),
+          mongoose.createConnection(uri, mongooseOptions as any),
         )
-          .pipe(
-            handleRetry(
-              mongooseModuleOptions.retryAttempts,
-              mongooseModuleOptions.retryDelay,
-            ),
-          )
+          .pipe(handleRetry(retryAttempts, retryDelay))
           .toPromise();
       },
       inject: [MONGOOSE_MODULE_OPTIONS],

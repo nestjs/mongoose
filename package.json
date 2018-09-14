@@ -1,8 +1,7 @@
 {
   "name": "@nestjs/mongoose",
   "version": "5.2.2",
-  "description":
-    "Nest - modern, fast, powerful node.js web framework (@mongoose)",
+  "description": "Nest - modern, fast, powerful node.js web framework (@mongoose)",
   "author": "Kamil Mysliwiec",
   "repository": "https://github.com/nestjs/mongoose.git",
   "license": "MIT",
@@ -15,28 +14,31 @@
     "publish:next": "npm publish --access public --tag next"
   },
   "devDependencies": {
-    "@nestjs/common": "^5.1.0",
-    "@nestjs/core": "^5.1.0",
-    "@types/mongoose": "^5.0.7",
-    "@types/node": "^7.0.41",
+    "@nestjs/common": "^5.3.7",
+    "@nestjs/core": "^5.3.7",
+    "@types/mongoose": "^5.2.12",
+    "@types/node": "^10.9.4",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.0",
-    "mongoose": "^5.0.1",
-    "prettier": "^1.11.1",
+    "lint-staged": "^7.2.2",
+    "mongoose": "^5.2.14",
+    "prettier": "^1.14.2",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^6.0.0",
-    "rxjs-compat": "^6.2.1",
-    "ts-node": "^3.3.0",
-    "typescript": "^2.8.0"
+    "rxjs": "^6.3.2",
+    "rxjs-compat": "^6.3.2",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.3"
   },
   "peerDependencies": {
-    "@nestjs/common": "^5.1.0",
-    "@nestjs/core": "^5.1.0",
-    "mongoose": "^5.0.1",
+    "@nestjs/common": "^5.3.7",
+    "@nestjs/core": "^5.3.7",
+    "mongoose": "^5.2.14",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^6.0.0"
+    "rxjs": "^6.3.2"
   },
   "lint-staged": {
-    "*.ts": ["prettier --write", "git add"]
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
