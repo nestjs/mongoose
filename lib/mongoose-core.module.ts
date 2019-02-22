@@ -15,7 +15,6 @@ import {
   MongooseOptionsFactory,
 } from './interfaces/mongoose-options.interface';
 import {
-  DEFAULT_DB_CONNECTION,
   MONGOOSE_CONNECTION_NAME,
   MONGOOSE_MODULE_OPTIONS,
 } from './mongoose.constants';
@@ -39,9 +38,7 @@ export class MongooseCoreModule {
       ...mongooseOptions
     } = options;
 
-    const mongooseConnectionName = connectionName
-      ? getConnectionToken(connectionName)
-      : DEFAULT_DB_CONNECTION;
+    const mongooseConnectionName = getConnectionToken(connectionName);
 
     const mongooseConnectionNameProvider = {
       provide: MONGOOSE_CONNECTION_NAME,
@@ -64,9 +61,7 @@ export class MongooseCoreModule {
   }
 
   static forRootAsync(options: MongooseModuleAsyncOptions): DynamicModule {
-    const mongooseConnectionName = options.connectionName
-      ? getConnectionToken(options.connectionName)
-      : DEFAULT_DB_CONNECTION;
+    const mongooseConnectionName = getConnectionToken(options.connectionName);
 
     const mongooseConnectionNameProvider = {
       provide: MONGOOSE_CONNECTION_NAME,
