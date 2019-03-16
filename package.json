@@ -22,7 +22,7 @@
     "lint-staged": "8.1.5",
     "mongoose": "5.4.19",
     "prettier": "1.16.4",
-    "reflect-metadata": "0.1.12",
+    "reflect-metadata": "0.1.13",
     "rxjs": "6.4.0",
     "rxjs-compat": "6.4.0",
     "ts-node": "8.0.3",
