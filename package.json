@@ -1,6 +1,6 @@
 {
   "name": "@nestjs/mongoose",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "Nest - modern, fast, powerful node.js web framework (@mongoose)",
   "author": "Kamil Mysliwiec",
   "repository": "https://github.com/nestjs/mongoose.git",
