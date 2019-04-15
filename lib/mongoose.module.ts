@@ -4,7 +4,6 @@ import {
   MongooseModuleOptions,
 } from './interfaces/mongoose-options.interface';
 import { MongooseCoreModule } from './mongoose-core.module';
-import { DEFAULT_DB_CONNECTION } from './mongoose.constants';
 import { createMongooseProviders } from './mongoose.providers';
 
 @Module({})
@@ -28,7 +27,7 @@ export class MongooseModule {
 
   static forFeature(
     models: { name: string; schema: any; collection?: string }[] = [],
-    connectionName: string = DEFAULT_DB_CONNECTION,
+    connectionName: string,
   ): DynamicModule {
     const providers = createMongooseProviders(connectionName, models);
     return {
