@@ -8,7 +8,9 @@ export function getModelToken(model: string) {
 }
 
 export function getConnectionToken(name?: string) {
-  return name ? `${name}Connection` : DEFAULT_DB_CONNECTION;
+  return name && name !== DEFAULT_DB_CONNECTION
+    ? `${name}Connection`
+    : DEFAULT_DB_CONNECTION;
 }
 
 export function handleRetry(
