@@ -2,7 +2,7 @@ import { Connection, Schema } from 'mongoose';
 import { getConnectionToken, getModelToken } from './common/mongoose.utils';
 
 export function createMongooseProviders(
-  connectionName: string,
+  connectionName?: string,
   models: { name: string; schema: Schema; collection?: string }[] = [],
 ) {
   const providers = (models || []).map(model => ({
