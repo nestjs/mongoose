@@ -4,6 +4,7 @@ import {
   Inject,
   Module,
   Provider,
+  Type,
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import * as mongoose from 'mongoose';
@@ -121,11 +122,12 @@ export class MongooseCoreModule {
     if (options.useExisting || options.useFactory) {
       return [this.createAsyncOptionsProvider(options)];
     }
+    const useClass = options.useClass as Type<MongooseOptionsFactory>;
     return [
       this.createAsyncOptionsProvider(options),
       {
-        provide: options.useClass,
-        useClass: options.useClass,
+        provide: useClass,
+        useClass,
       },
     ];
   }
@@ -140,11 +142,15 @@ export class MongooseCoreModule {
         inject: options.inject || [],
       };
     }
+    // `as Type<MongooseOptionsFactory>` is a workaround for microsoft/TypeScript#31603
+    const inject = [
+      (options.useClass || options.useExisting) as Type<MongooseOptionsFactory>,
+    ];
     return {
       provide: MONGOOSE_MODULE_OPTIONS,
       useFactory: async (optionsFactory: MongooseOptionsFactory) =>
         await optionsFactory.createMongooseOptions(),
-      inject: [options.useExisting || options.useClass],
+      inject,
     };
   }
 }
