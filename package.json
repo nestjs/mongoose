@@ -14,8 +14,8 @@
     "publish:next": "npm publish --access public --tag next"
   },
   "devDependencies": {
-    "@nestjs/common": "6.6.4",
-    "@nestjs/core": "6.6.4",
+    "@nestjs/common": "6.6.7",
+    "@nestjs/core": "6.6.7",
     "@types/mongoose": "5.5.16",
     "@types/node": "11.13.20",
     "husky": "3.0.5",
