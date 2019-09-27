@@ -17,7 +17,7 @@
     "@nestjs/common": "6.7.1",
     "@nestjs/core": "6.7.1",
     "@types/mongoose": "5.5.18",
-    "@types/node": "11.13.20",
+    "@types/node": "11.13.21",
     "husky": "3.0.5",
     "lint-staged": "9.2.5",
     "mongoose": "5.7.1",
