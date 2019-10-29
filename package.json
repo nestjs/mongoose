@@ -16,11 +16,11 @@
   "devDependencies": {
     "@nestjs/common": "6.8.5",
     "@nestjs/core": "6.8.5",
-    "@types/mongoose": "5.5.18",
+    "@types/mongoose": "5.5.23",
     "@types/node": "11.15.0",
     "husky": "3.0.5",
     "lint-staged": "9.4.2",
-    "mongoose": "5.7.5",
+    "mongoose": "5.7.7",
     "prettier": "1.18.2",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.5.3",
