@@ -3,6 +3,7 @@ import {
   Global,
   Inject,
   Module,
+  OnApplicationShutdown,
   Provider,
   Type,
 } from '@nestjs/common';
@@ -22,7 +23,7 @@ import {
 
 @Global()
 @Module({})
-export class MongooseCoreModule {
+export class MongooseCoreModule implements OnApplicationShutdown {
   constructor(
     @Inject(MONGOOSE_CONNECTION_NAME) private readonly connectionName: string,
     private readonly moduleRef: ModuleRef,
@@ -111,7 +112,7 @@ export class MongooseCoreModule {
     };
   }
 
-  async onModuleDestroy() {
+  async onApplicationShutdown() {
     const connection = this.moduleRef.get<any>(this.connectionName);
     connection && (await connection.close());
   }
