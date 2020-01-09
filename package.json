@@ -16,7 +16,7 @@
   "devDependencies": {
     "@nestjs/common": "6.10.14",
     "@nestjs/core": "6.10.14",
-    "@types/mongoose": "5.5.40",
+    "@types/mongoose": "5.5.41",
     "@types/node": "11.15.0",
     "husky": "4.0.3",
     "lint-staged": "9.5.0",
