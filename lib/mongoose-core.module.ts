@@ -36,9 +36,12 @@ export class MongooseCoreModule {
       retryAttempts,
       retryDelay,
       connectionName,
+      connectionFactory,
       ...mongooseOptions
     } = options;
 
+    const mongooseConnectionFactory =
+      connectionFactory || (connection => connection);
     const mongooseConnectionName = getConnectionToken(connectionName);
 
     const mongooseConnectionNameProvider = {
@@ -49,7 +52,10 @@ export class MongooseCoreModule {
       provide: mongooseConnectionName,
       useFactory: async (): Promise<any> =>
         await defer(async () =>
-          mongoose.createConnection(uri, mongooseOptions as any),
+          mongooseConnectionFactory(
+            mongoose.createConnection(uri, mongooseOptions as any),
+            mongooseConnectionName,
+          ),
         )
           .pipe(handleRetry(retryAttempts, retryDelay))
           .toPromise(),
@@ -79,13 +85,20 @@ export class MongooseCoreModule {
           retryDelay,
           connectionName,
           uri,
+          connectionFactory,
           ...mongooseOptions
         } = mongooseModuleOptions;
 
+        const mongooseConnectionFactory =
+          connectionFactory || (connection => connection);
+
         return await defer(async () =>
-          mongoose.createConnection(
-            mongooseModuleOptions.uri,
-            mongooseOptions as any,
+          mongooseConnectionFactory(
+            mongoose.createConnection(
+              mongooseModuleOptions.uri,
+              mongooseOptions as any,
+            ),
+            mongooseConnectionName,
           ),
         )
           .pipe(

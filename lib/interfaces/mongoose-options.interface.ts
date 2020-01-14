@@ -6,6 +6,7 @@ export interface MongooseModuleOptions {
   retryAttempts?: number;
   retryDelay?: number;
   connectionName?: string;
+  connectionFactory?: (connection: any, name: string) => any;
 }
 
 export interface MongooseOptionsFactory {
