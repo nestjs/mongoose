@@ -26,7 +26,7 @@
     "rxjs": "6.5.4",
     "rxjs-compat": "6.5.4",
     "ts-node": "8.6.2",
-    "typescript": "3.7.4"
+    "typescript": "3.7.5"
   },
   "peerDependencies": {
     "@nestjs/common": "^6.0.0",
