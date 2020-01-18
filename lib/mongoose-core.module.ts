@@ -20,6 +20,7 @@ import {
   MONGOOSE_CONNECTION_NAME,
   MONGOOSE_MODULE_OPTIONS,
 } from './mongoose.constants';
+import { Connection } from 'mongoose';
 
 @Global()
 @Module({})
@@ -93,15 +94,22 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         const mongooseConnectionFactory =
           connectionFactory || (connection => connection);
 
-        return await defer(async () =>
-          mongooseConnectionFactory(
+        const connections: Connection[] = mongoose.connections;
+
+        return await defer(async () => {
+          let existingConnection = connections.find(
+            (connection: Connection) => connection['name'] === connectionName,
+          );
+
+          const _connection =
+            existingConnection ||
             mongoose.createConnection(
               mongooseModuleOptions.uri,
               mongooseOptions as any,
-            ),
-            mongooseConnectionName,
-          ),
-        )
+            );
+
+          return mongooseConnectionFactory(_connection, mongooseConnectionName);
+        })
           .pipe(
             handleRetry(
               mongooseModuleOptions.retryAttempts,
