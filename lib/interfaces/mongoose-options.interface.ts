@@ -1,8 +1,9 @@
 import { Type } from '@nestjs/common';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
+import { ConnectionOptions } from 'mongoose';
 
-export interface MongooseModuleOptions {
-  [key: string]: any;
+export interface MongooseModuleOptions extends ConnectionOptions {
+  uri?: string;
   retryAttempts?: number;
   retryDelay?: number;
   connectionName?: string;
