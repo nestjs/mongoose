@@ -95,12 +95,10 @@ export class MongooseCoreModule implements OnApplicationShutdown {
 
         return await defer(async () =>
           mongooseConnectionFactory(
-            mongooseModuleOptions.uri
-              ? mongoose.createConnection(
-                  mongooseModuleOptions.uri,
-                  mongooseOptions,
-                )
-              : mongoose.createConnection(),
+            mongoose.createConnection(
+              mongooseModuleOptions.uri as string,
+              mongooseOptions,
+            ),
             mongooseConnectionName,
           ),
         )
