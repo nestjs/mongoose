@@ -17,7 +17,7 @@ export function handleRetry(
   retryAttempts = 9,
   retryDelay = 3000,
 ): <T>(source: Observable<T>) => Observable<T> {
-  const logger = new Logger('MongooseModule', true);
+  const logger = new Logger('MongooseModule');
   return <T>(source: Observable<T>) =>
     source.pipe(
       retryWhen(e =>
