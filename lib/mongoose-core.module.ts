@@ -29,10 +29,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
     private readonly moduleRef: ModuleRef,
   ) {}
 
-  static forRoot(
-    uri: string,
-    options: MongooseModuleOptions = {},
-  ): DynamicModule {
+  static forRoot(options: MongooseModuleOptions): DynamicModule {
     const {
       retryAttempts,
       retryDelay,
@@ -54,7 +51,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       useFactory: async (): Promise<any> =>
         await defer(async () =>
           mongooseConnectionFactory(
-            mongoose.createConnection(uri, mongooseOptions),
+            mongoose.createConnection(options.uri, mongooseOptions),
             mongooseConnectionName,
           ),
         )
@@ -95,10 +92,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
 
         return await defer(async () =>
           mongooseConnectionFactory(
-            mongoose.createConnection(
-              mongooseModuleOptions.uri as string,
-              mongooseOptions,
-            ),
+            mongoose.createConnection(uri, mongooseOptions),
             mongooseConnectionName,
           ),
         )
