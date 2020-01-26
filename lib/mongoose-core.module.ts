@@ -54,7 +54,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       useFactory: async (): Promise<any> =>
         await defer(async () =>
           mongooseConnectionFactory(
-            mongoose.createConnection(uri, mongooseOptions as any),
+            mongoose.createConnection(uri, mongooseOptions),
             mongooseConnectionName,
           ),
         )
@@ -96,8 +96,8 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         return await defer(async () =>
           mongooseConnectionFactory(
             mongoose.createConnection(
-              mongooseModuleOptions.uri,
-              mongooseOptions as any,
+              mongooseModuleOptions.uri as string,
+              mongooseOptions,
             ),
             mongooseConnectionName,
           ),
