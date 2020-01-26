@@ -6,23 +6,34 @@
   "repository": "https://github.com/nestjs/mongoose.git",
   "license": "MIT",
   "scripts": {
+    "lint": "eslint '{src,test}/**/*.ts' --fix",
     "build": "rm -rf dist && tsc -p tsconfig.json",
     "precommit": "lint-staged",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
-    "publish:next": "npm publish --access public --tag next"
+    "publish:next": "npm publish --access public --tag next",
+    "prerelease": "npm run build",
+    "release": "release-it"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-angular": "^8.3.4",
     "@nestjs/common": "6.11.1",
     "@nestjs/core": "6.11.1",
     "@types/mongoose": "5.5.43",
     "@types/node": "11.15.0",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.17.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.20.0",
     "husky": "4.2.1",
     "lint-staged": "10.0.2",
     "mongoose": "5.8.9",
     "prettier": "1.19.1",
     "reflect-metadata": "0.1.13",
+    "release-it": "^12.4.3",
     "rxjs": "6.5.4",
     "rxjs-compat": "6.5.4",
     "ts-node": "8.6.2",
@@ -37,8 +48,13 @@
   },
   "lint-staged": {
     "*.ts": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -c .commitlintrc.json -E HUSKY_GIT_PARAMS"
+    }
   }
 }
