@@ -3,7 +3,7 @@ import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { ConnectionOptions } from 'mongoose';
 
 export interface MongooseModuleOptions extends ConnectionOptions {
-  uri?: string;
+  uri: string;
   retryAttempts?: number;
   retryDelay?: number;
   connectionName?: string;

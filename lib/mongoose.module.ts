@@ -12,13 +12,10 @@ import {
 
 @Module({})
 export class MongooseModule {
-  static forRoot(
-    uri: string,
-    options: MongooseModuleOptions = {},
-  ): DynamicModule {
+  static forRoot(options: MongooseModuleOptions): DynamicModule {
     return {
       module: MongooseModule,
-      imports: [MongooseCoreModule.forRoot(uri, options)],
+      imports: [MongooseCoreModule.forRoot(options)],
     };
   }
 
