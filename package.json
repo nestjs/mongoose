@@ -30,7 +30,7 @@
     "eslint-plugin-import": "2.20.1",
     "husky": "4.2.3",
     "lint-staged": "10.0.8",
-    "mongoose": "5.9.3",
+    "mongoose": "5.9.4",
     "prettier": "1.19.1",
     "reflect-metadata": "0.1.13",
     "release-it": "13.0.2",
