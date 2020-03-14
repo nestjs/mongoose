@@ -6,7 +6,8 @@
   "repository": "https://github.com/nestjs/mongoose.git",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint '{src,test}/**/*.ts' --fix",
+    "lint": "eslint \"lib/**/*.ts\" --fix",
+    "format": "prettier \"lib/**/*.ts\" --write",
     "build": "rm -rf dist && tsc -p tsconfig.json",
     "precommit": "lint-staged",
     "prepublish:npm": "npm run build",
