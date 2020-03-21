@@ -34,7 +34,7 @@
     "mongoose": "5.9.5",
     "prettier": "1.19.1",
     "reflect-metadata": "0.1.13",
-    "release-it": "13.1.1",
+    "release-it": "13.1.2",
     "rxjs": "6.5.4",
     "rxjs-compat": "6.5.4",
     "ts-node": "8.7.0",
