@@ -22,7 +22,7 @@
     "@commitlint/config-angular": "8.3.4",
     "@nestjs/common": "7.0.7",
     "@nestjs/core": "7.0.7",
-    "@types/mongoose": "5.7.8",
+    "@types/mongoose": "5.7.9",
     "@types/node": "11.15.0",
     "@typescript-eslint/eslint-plugin": "2.27.0",
     "@typescript-eslint/parser": "2.27.0",
