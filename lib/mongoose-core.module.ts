@@ -55,7 +55,11 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       useFactory: async (): Promise<any> =>
         await defer(async () =>
           mongooseConnectionFactory(
-            mongoose.createConnection(uri, mongooseOptions),
+            mongoose.createConnection(uri, {
+              useNewUrlParser: true,
+              useUnifiedTopology: true,
+              ...mongooseOptions,
+            }),
             mongooseConnectionName,
           ),
         )
@@ -96,10 +100,11 @@ export class MongooseCoreModule implements OnApplicationShutdown {
 
         return await defer(async () =>
           mongooseConnectionFactory(
-            mongoose.createConnection(
-              mongooseModuleOptions.uri as string,
-              mongooseOptions,
-            ),
+            mongoose.createConnection(mongooseModuleOptions.uri as string, {
+              useNewUrlParser: true,
+              useUnifiedTopology: true,
+              ...mongooseOptions,
+            }),
             mongooseConnectionName,
           ),
         )

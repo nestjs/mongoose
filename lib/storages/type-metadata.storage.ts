@@ -11,38 +11,21 @@ export class TypeMetadataStorageHost {
     this.properties.push(metadata);
   }
 
-  getPropertiesMetadata(): PropertyMetadata[] {
-    return this.properties;
-  }
-
   addSchemaMetadata(metadata: SchemaMetadata) {
+    this.compileClassMetadata(metadata);
     this.schemas.push(metadata);
-  }
-
-  getSchemasMetadata(): SchemaMetadata[] {
-    return this.schemas;
   }
 
   getSchemaMetadataByTarget(target: Type<unknown>): SchemaMetadata | undefined {
     return this.schemas.find(item => item.target === target);
   }
 
-  compile() {
-    this.compileClassMetadata(this.schemas);
-  }
+  private compileClassMetadata(metadata: SchemaMetadata) {
+    const belongsToClass = isTargetEqual.bind(undefined, metadata);
 
-  private compileClassMetadata(metadata: SchemaMetadata[]) {
-    metadata.forEach(item => {
-      const belongsToClass = isTargetEqual.bind(undefined, item);
-
-      if (!item.properties) {
-        item.properties = this.getClassFieldsByPredicate(belongsToClass);
-      }
-    });
-  }
-
-  clear() {
-    Object.assign(this, new TypeMetadataStorageHost());
+    if (!metadata.properties) {
+      metadata.properties = this.getClassFieldsByPredicate(belongsToClass);
+    }
   }
 
   private getClassFieldsByPredicate(

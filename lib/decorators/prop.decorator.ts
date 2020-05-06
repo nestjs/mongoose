@@ -17,17 +17,12 @@ export type PropOptions =
  */
 export function Prop(options?: PropOptions): PropertyDecorator {
   return (target: object, propertyKey: string | symbol) => {
-    options = options || {};
+    if (!options) {
+      options = {};
 
-    const schemaTypeOpts = options as mongoose.SchemaTypeOpts<unknown>;
-    if (!schemaTypeOpts.type) {
-      const type = Reflect.getMetadata(
-        TYPE_METADATA_KEY,
-        target.constructor,
-        propertyKey,
-      );
+      const type = Reflect.getMetadata(TYPE_METADATA_KEY, target, propertyKey);
       if (type) {
-        schemaTypeOpts.type = type;
+        options.type = type;
       }
     }
 
