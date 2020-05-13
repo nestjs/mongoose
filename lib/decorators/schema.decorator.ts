@@ -7,7 +7,7 @@ import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 export type SchemaOptions = mongoose.SchemaOptions;
 
 /**
- * @Schema() decorator is used to mark a class as a Mongoose schema.
+ * @Schema decorator is used to mark a class as a Mongoose schema.
  * Only properties decorated with this decorator will be defined in the schema.
  */
 export function Schema(options?: SchemaOptions): ClassDecorator {
