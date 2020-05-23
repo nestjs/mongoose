@@ -76,6 +76,6 @@ workflows:
     jobs:
       - build
       - integration_tests:
-        requires:
-          - build
+          requires:
+            - build
       
