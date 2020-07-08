@@ -17,7 +17,7 @@ export class TypeMetadataStorageHost {
   }
 
   getSchemaMetadataByTarget(target: Type<unknown>): SchemaMetadata | undefined {
-    return this.schemas.find(item => item.target === target);
+    return this.schemas.find((item) => item.target === target);
   }
 
   private compileClassMetadata(metadata: SchemaMetadata) {

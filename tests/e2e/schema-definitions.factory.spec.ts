@@ -27,6 +27,17 @@ class ExampleClass {
   @Prop()
   mixed: mongoose.Schema.Types.Mixed;
 
+  @Prop(
+    raw({
+      expires: 0,
+      type: Date,
+    }),
+  )
+  expiresAt: Date;
+
+  @Prop()
+  map: Map<any, any>;
+
   @Prop()
   isEnabled: boolean;
 
@@ -90,8 +101,15 @@ describe('DefinitionsFactory', () => {
       array: { type: [] },
       customArray: [{ custom: 'literal', object: true }],
       customObject: { custom: 'literal', object: true },
+      expiresAt: {
+        expires: 0,
+        type: Date,
+      },
       isEnabled: {
         type: Boolean,
+      },
+      map: {
+        type: Map,
       },
       mixed: { type: mongoose.Schema.Types.Mixed },
       number: { type: Number },

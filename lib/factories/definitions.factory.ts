@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose';
 import { PropOptions } from '../decorators';
 import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 
-const PRIMITIVE_TYPES: Function[] = [Boolean, Number, String];
+const BUILT_IN_TYPES: Function[] = [Boolean, Number, String, Map, Date];
 
 export class DefinitionsFactory {
   static createForClass(target: Type<unknown>): mongoose.SchemaDefinition {
@@ -62,7 +62,7 @@ export class DefinitionsFactory {
   }
 
   private static isPrimitive(type: Function) {
-    return PRIMITIVE_TYPES.includes(type);
+    return BUILT_IN_TYPES.includes(type);
   }
 
   private static isMongooseSchemaType(type: Function) {
