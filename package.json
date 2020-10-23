@@ -37,7 +37,7 @@
     "husky": "4.3.0",
     "jest": "26.6.1",
     "lint-staged": "10.4.2",
-    "mongoose": "5.10.9",
+    "mongoose": "5.10.10",
     "prettier": "2.1.2",
     "reflect-metadata": "0.1.13",
     "release-it": "14.2.0",
