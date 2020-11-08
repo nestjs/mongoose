@@ -1,16 +1,27 @@
 import { flatten } from '@nestjs/common';
-import { Connection, Schema } from 'mongoose';
+import { Connection } from 'mongoose';
 import { getConnectionToken, getModelToken } from './common/mongoose.utils';
-import { AsyncModelFactory } from './interfaces';
+import { AsyncModelFactory, ModelDefinition } from './interfaces';
 
 export function createMongooseProviders(
   connectionName?: string,
-  models: { name: string; schema: Schema; collection?: string }[] = [],
+  options: ModelDefinition[] = [],
 ) {
-  const providers = (models || []).map(model => ({
-    provide: getModelToken(model.name),
-    useFactory: (connection: Connection) =>
-      connection.model(model.name, model.schema, model.collection),
+  const providers = (options || []).map((option) => ({
+    provide: getModelToken(option.name),
+    useFactory: (connection: Connection) => {
+      const model = connection.model(
+        option.name,
+        option.schema,
+        option.collection,
+      );
+      if (option.discriminators) {
+        for (const { name, schema } of option.discriminators) {
+          model.discriminator(name, schema);
+        }
+      }
+      return model;
+    },
     inject: [getConnectionToken(connectionName)],
   }));
   return providers;
@@ -20,7 +31,7 @@ export function createMongooseAsyncProviders(
   connectionName?: string,
   modelFactories: AsyncModelFactory[] = [],
 ) {
-  const providers = (modelFactories || []).map(model => [
+  const providers = (modelFactories || []).map((model) => [
     {
       provide: getModelToken(model.name),
       useFactory: async (connection: Connection, ...args: unknown[]) => {
