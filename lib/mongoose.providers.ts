@@ -1,7 +1,23 @@
 import { flatten } from '@nestjs/common';
-import { Connection } from 'mongoose';
+import { Connection, Document, Model } from 'mongoose';
 import { getConnectionToken, getModelToken } from './common/mongoose.utils';
-import { AsyncModelFactory, ModelDefinition } from './interfaces';
+import {
+  AsyncModelFactory,
+  ModelDefinition,
+  DiscriminatorOptions,
+} from './interfaces';
+
+function addDiscriminators(
+  model: Model<Document>,
+  discriminators?: DiscriminatorOptions[],
+) {
+  if (discriminators) {
+    for (const { name, schema } of discriminators) {
+      model.discriminator(name, schema);
+    }
+  }
+  return model;
+}
 
 export function createMongooseProviders(
   connectionName?: string,
@@ -15,12 +31,7 @@ export function createMongooseProviders(
         option.schema,
         option.collection,
       );
-      if (option.discriminators) {
-        for (const { name, schema } of option.discriminators) {
-          model.discriminator(name, schema);
-        }
-      }
-      return model;
+      return addDiscriminators(model, option.discriminators);
     },
     inject: [getConnectionToken(connectionName)],
   }));
@@ -31,14 +42,16 @@ export function createMongooseAsyncProviders(
   connectionName?: string,
   modelFactories: AsyncModelFactory[] = [],
 ) {
-  const providers = (modelFactories || []).map((model) => [
+  const providers = (modelFactories || []).map((option) => [
     {
-      provide: getModelToken(model.name),
+      provide: getModelToken(option.name),
       useFactory: async (connection: Connection, ...args: unknown[]) => {
-        const schema = await model.useFactory(...args);
-        return connection.model(model.name, schema, model.collection);
+        const schema = await option.useFactory(...args);
+        const model = connection.model(option.name, schema, option.collection);
+        addDiscriminators(model);
+        return model;
       },
-      inject: [getConnectionToken(connectionName), ...(model.inject || [])],
+      inject: [getConnectionToken(connectionName), ...(option.inject || [])],
     },
   ]);
   return flatten(providers);
