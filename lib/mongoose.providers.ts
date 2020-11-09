@@ -48,7 +48,7 @@ export function createMongooseAsyncProviders(
       useFactory: async (connection: Connection, ...args: unknown[]) => {
         const schema = await option.useFactory(...args);
         const model = connection.model(option.name, schema, option.collection);
-        addDiscriminators(model);
+        addDiscriminators(model, option.discriminators);
         return model;
       },
       inject: [getConnectionToken(connectionName), ...(option.inject || [])],
