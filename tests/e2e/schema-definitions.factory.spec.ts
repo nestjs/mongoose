@@ -18,6 +18,9 @@ class ExampleClass {
   @Prop({ required: true })
   name: string;
 
+  @Prop({ required: true })
+  object: object;
+
   @Prop()
   buffer: mongoose.Schema.Types.Buffer;
 
@@ -74,6 +77,10 @@ describe('DefinitionsFactory', () => {
         required: true,
         type: String,
       },
+      object: {
+        required: true,
+        type: mongoose.SchemaTypes.Mixed,
+      },
       nodes: [
         {
           id: {
@@ -97,7 +104,7 @@ describe('DefinitionsFactory', () => {
           },
         },
       },
-      any: {},
+      any: { type: mongoose.SchemaTypes.Mixed },
       array: { type: [] },
       customArray: [{ custom: 'literal', object: true }],
       customObject: { custom: 'literal', object: true },

@@ -28,6 +28,8 @@ export function Prop(options?: PropOptions): PropertyDecorator {
         options.type = [];
       } else if (type && type !== Object) {
         options.type = type;
+      } else {
+        options.type = mongoose.SchemaTypes.Mixed;
       }
     }
 
