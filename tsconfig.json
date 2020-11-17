@@ -9,11 +9,7 @@
     "experimentalDecorators": true,
     "target": "es6",
     "sourceMap": false,
-    "outDir": "./dist",
-    "rootDir": "./lib",
     "strict": true,
     "strictPropertyInitialization": false
-  },
-  "include": ["lib/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  }
 }
