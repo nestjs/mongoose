@@ -20,12 +20,13 @@ export function handleRetry(
   const logger = new Logger('MongooseModule');
   return <T>(source: Observable<T>) =>
     source.pipe(
-      retryWhen(e =>
+      retryWhen((e) =>
         e.pipe(
           scan((errorCount, error) => {
             logger.error(
-              `Unable to connect to the database. Retrying (${errorCount +
-                1})...`,
+              `Unable to connect to the database. Retrying (${
+                errorCount + 1
+              })...`,
               '',
             );
             if (errorCount + 1 >= retryAttempts) {

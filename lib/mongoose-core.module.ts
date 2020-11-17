@@ -43,7 +43,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
     } = options;
 
     const mongooseConnectionFactory =
-      connectionFactory || (connection => connection);
+      connectionFactory || ((connection) => connection);
     const mongooseConnectionName = getConnectionToken(connectionName);
 
     const mongooseConnectionNameProvider = {
@@ -96,7 +96,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         } = mongooseModuleOptions;
 
         const mongooseConnectionFactory =
-          connectionFactory || (connection => connection);
+          connectionFactory || ((connection) => connection);
 
         return await defer(async () =>
           mongooseConnectionFactory(

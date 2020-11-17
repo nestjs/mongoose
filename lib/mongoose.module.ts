@@ -46,7 +46,7 @@ export class MongooseModule {
     connectionName?: string,
   ): DynamicModule {
     const providers = createMongooseAsyncProviders(connectionName, factories);
-    const imports = factories.map(factory => factory.imports || []);
+    const imports = factories.map((factory) => factory.imports || []);
     const uniqImports = new Set(flatten(imports));
 
     return {
