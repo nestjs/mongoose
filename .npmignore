@@ -4,5 +4,7 @@ index.ts
 package-lock.json
 .eslintrc.js
 tsconfig.json
+tsconfig.build.json
+.prettierrc
 .prettierrc
 .commitlintrc.json
