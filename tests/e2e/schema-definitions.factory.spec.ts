@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 import { DefinitionsFactory, Prop, raw, Schema } from '../../lib';
+import { CannotDetermineTypeError } from '../../lib/errors';
 
 @Schema()
 class ChildClass {
@@ -17,9 +18,6 @@ class ExampleClass {
 
   @Prop({ required: true })
   name: string;
-
-  @Prop({ required: true })
-  object: object;
 
   @Prop()
   buffer: mongoose.Schema.Types.Buffer;
@@ -59,7 +57,7 @@ class ExampleClass {
   @Prop(raw({ custom: 'literal', object: true }))
   customObject: any;
 
-  @Prop()
+  @Prop({ type: mongoose.Schema.Types.Mixed })
   any: any;
 
   @Prop()
@@ -76,10 +74,6 @@ describe('DefinitionsFactory', () => {
       name: {
         required: true,
         type: String,
-      },
-      object: {
-        required: true,
-        type: mongoose.SchemaTypes.Mixed,
       },
       nodes: [
         {
@@ -104,7 +98,7 @@ describe('DefinitionsFactory', () => {
           },
         },
       },
-      any: { type: mongoose.SchemaTypes.Mixed },
+      any: { type: mongoose.Schema.Types.Mixed },
       array: { type: [] },
       customArray: [{ custom: 'literal', object: true }],
       customObject: { custom: 'literal', object: true },
@@ -121,5 +115,20 @@ describe('DefinitionsFactory', () => {
       mixed: { type: mongoose.Schema.Types.Mixed },
       number: { type: Number },
     });
+  });
+
+  it('should throw an error when type is ambiguous', () => {
+    try {
+      class AmbiguousField {
+        @Prop()
+        randomField: object | null;
+      }
+      DefinitionsFactory.createForClass(AmbiguousField);
+    } catch (err) {
+      expect(err).toBeInstanceOf(CannotDetermineTypeError);
+      expect(err.message).toEqual(
+        'Cannot determine a type for the "AmbiguousField.randomField" field (union/intersection/ambiguous type was used). Make sure your property is decorated with a "@Prop({ type: TYPE_HERE })" decorator.',
+      );
+    }
   });
 });

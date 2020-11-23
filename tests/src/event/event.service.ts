@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model, Document } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { InjectModel } from '../../../lib';
 import { CreateClickLinkEventDto } from './dto/create-click-link-event.dto';
 import { CreateSignUpEventDto } from './dto/create-sign-up-event.dto';
@@ -13,10 +13,10 @@ export class EventService {
   ) {}
 
   async create(
-    createCatDto: CreateClickLinkEventDto | CreateSignUpEventDto,
+    createDto: CreateClickLinkEventDto | CreateSignUpEventDto,
   ): Promise<Event> {
-    const createdCat = new this.eventModel(createCatDto);
-    return createdCat.save();
+    const createdEvent = new this.eventModel(createDto);
+    return createdEvent.save();
   }
 
   async findAll(): Promise<Event[]> {

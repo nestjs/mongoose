@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { CannotDetermineTypeError } from '../errors';
 import { RAW_OBJECT_DEFINITION } from '../mongoose.constants';
 import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 
@@ -29,7 +30,10 @@ export function Prop(options?: PropOptions): PropertyDecorator {
       } else if (type && type !== Object) {
         options.type = type;
       } else {
-        options.type = mongoose.SchemaTypes.Mixed;
+        throw new CannotDetermineTypeError(
+          target.constructor?.name,
+          propertyKey as string,
+        );
       }
     }
 
