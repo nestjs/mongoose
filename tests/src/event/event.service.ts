@@ -4,12 +4,20 @@ import { InjectModel } from '../../../lib';
 import { CreateClickLinkEventDto } from './dto/create-click-link-event.dto';
 import { CreateSignUpEventDto } from './dto/create-sign-up-event.dto';
 import { Event } from './schemas/event.schema';
+import { ClieckLinkEvent } from './schemas/click-link-event.schema';
+import { SignUpEvent } from './schemas/sign-up-event.schema';
 
 @Injectable()
 export class EventService {
   constructor(
     @InjectModel(Event.name)
     private readonly eventModel: Model<Event & Document>,
+
+    @InjectModel(ClieckLinkEvent.name)
+    private readonly clientEventModel: Model<Event & Document>,
+
+    @InjectModel(SignUpEvent.name)
+    private readonly signUpEventModel: Model<Event & Document>,
   ) {}
 
   async create(

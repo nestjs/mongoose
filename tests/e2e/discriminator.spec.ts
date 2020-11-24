@@ -1,16 +1,58 @@
-import { HttpStatus, INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication, DynamicModule } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'http';
 import * as request from 'supertest';
-import { AppModule } from '../src/app.module';
+import { MongooseModule } from '../../lib';
+import { EventModule } from '../src/event/event.module';
+import { Event, EventSchema } from '../src/event/schemas/event.schema';
+import {
+  ClieckLinkEvent,
+  ClieckLinkEventSchema,
+} from '../src/event/schemas/click-link-event.schema';
+import {
+  SignUpEvent,
+  SignUpEventSchema,
+} from '../src/event/schemas/sign-up-event.schema';
 
-describe('Discriminator', () => {
+const testCase: [string, DynamicModule][] = [
+  [
+    'forFeature',
+    MongooseModule.forFeature([
+      {
+        name: Event.name,
+        schema: EventSchema,
+        discriminators: [
+          { name: ClieckLinkEvent.name, schema: ClieckLinkEventSchema },
+          { name: SignUpEvent.name, schema: SignUpEventSchema },
+        ],
+      },
+    ]),
+  ],
+  [
+    'forFeatureAsync',
+    MongooseModule.forFeatureAsync([
+      {
+        name: Event.name,
+        useFactory: async () => EventSchema,
+        discriminators: [
+          { name: ClieckLinkEvent.name, schema: ClieckLinkEventSchema },
+          { name: SignUpEvent.name, schema: SignUpEventSchema },
+        ],
+      },
+    ]),
+  ],
+];
+
+describe.each(testCase)('Discriminator - %s', (_, features) => {
   let server: Server;
   let app: INestApplication;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        MongooseModule.forRoot('mongodb://localhost:27017/test'),
+        EventModule.forFeature(features),
+      ],
     }).compile();
 
     app = module.createNestApplication();
