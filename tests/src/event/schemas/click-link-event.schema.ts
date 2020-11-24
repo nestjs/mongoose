@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '../../../../lib';
 import { Event } from './event.schema';
 
 @Schema({})
-export class ClieckLinkEvent implements Event {
+export class ClickLinkEvent implements Event {
   kind: string;
 
   time: Date;
@@ -12,5 +12,5 @@ export class ClieckLinkEvent implements Event {
 }
 
 export const ClieckLinkEventSchema = SchemaFactory.createForClass(
-  ClieckLinkEvent,
+  ClickLinkEvent,
 );

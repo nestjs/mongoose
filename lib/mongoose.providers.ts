@@ -3,15 +3,15 @@ import { Connection, Document, Model } from 'mongoose';
 import { getConnectionToken, getModelToken } from './common/mongoose.utils';
 import {
   AsyncModelFactory,
-  ModelDefinition,
   DiscriminatorOptions,
+  ModelDefinition,
 } from './interfaces';
 
 function addDiscriminators(
   model: Model<Document>,
   discriminators: DiscriminatorOptions[] = [],
-): Model<Document>[] {
-  return discriminators.map(({ name, schema }) =>
+) {
+  discriminators.forEach(({ name, schema }) =>
     model.discriminator(name, schema),
   );
 }

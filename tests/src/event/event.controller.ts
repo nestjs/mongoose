@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { EventService } from './event.service';
 import { CreateClickLinkEventDto } from './dto/create-click-link-event.dto';
 import { CreateSignUpEventDto } from './dto/create-sign-up-event.dto';
+import { EventService } from './event.service';
+import { ClickLinkEvent } from './schemas/click-link-event.schema';
 import { Event } from './schemas/event.schema';
-import { ClieckLinkEvent } from './schemas/click-link-event.schema';
 import { SignUpEvent } from './schemas/sign-up-event.schema';
 
 @Controller('event')
@@ -17,7 +17,7 @@ export class EventController {
     return this.eventService.create({
       ...dto,
       time: new Date(),
-      kind: ClieckLinkEvent.name,
+      kind: ClickLinkEvent.name,
     });
   }
 

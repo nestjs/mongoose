@@ -1,14 +1,14 @@
-import { HttpStatus, INestApplication, DynamicModule } from '@nestjs/common';
+import { DynamicModule, HttpStatus, INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'http';
 import * as request from 'supertest';
 import { MongooseModule } from '../../lib';
 import { EventModule } from '../src/event/event.module';
-import { Event, EventSchema } from '../src/event/schemas/event.schema';
 import {
-  ClieckLinkEvent,
+  ClickLinkEvent,
   ClieckLinkEventSchema,
 } from '../src/event/schemas/click-link-event.schema';
+import { Event, EventSchema } from '../src/event/schemas/event.schema';
 import {
   SignUpEvent,
   SignUpEventSchema,
@@ -22,7 +22,7 @@ const testCase: [string, DynamicModule][] = [
         name: Event.name,
         schema: EventSchema,
         discriminators: [
-          { name: ClieckLinkEvent.name, schema: ClieckLinkEventSchema },
+          { name: ClickLinkEvent.name, schema: ClieckLinkEventSchema },
           { name: SignUpEvent.name, schema: SignUpEventSchema },
         ],
       },
@@ -35,7 +35,7 @@ const testCase: [string, DynamicModule][] = [
         name: Event.name,
         useFactory: async () => EventSchema,
         discriminators: [
-          { name: ClieckLinkEvent.name, schema: ClieckLinkEventSchema },
+          { name: ClickLinkEvent.name, schema: ClieckLinkEventSchema },
           { name: SignUpEvent.name, schema: SignUpEventSchema },
         ],
       },
