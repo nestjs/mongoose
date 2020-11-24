@@ -41,24 +41,40 @@ export class DefinitionsFactory {
   }
 
   private static inspectTypeDefinition(
-    options: mongoose.SchemaTypeOpts<unknown> | Function,
+    optionsOrType: mongoose.SchemaTypeOpts<unknown> | Function,
   ): PropOptions {
-    if (typeof options === 'function') {
-      if (this.isPrimitive(options)) {
-        return options;
-      } else if (this.isMongooseSchemaType(options)) {
-        return options;
+    if (typeof optionsOrType === 'function') {
+      if (this.isPrimitive(optionsOrType)) {
+        return optionsOrType;
+      } else if (this.isMongooseSchemaType(optionsOrType)) {
+        return optionsOrType;
       }
-      return this.createForClass(options as Type<unknown>);
-    } else if (typeof options.type === 'function') {
-      options.type = this.inspectTypeDefinition(options.type);
-      return options;
-    } else if (Array.isArray(options)) {
-      return options.length > 0
-        ? [this.inspectTypeDefinition(options[0])]
-        : options;
+
+      const schemaDefinition = this.createForClass(
+        optionsOrType as Type<unknown>,
+      );
+      const schemaMetadata = TypeMetadataStorage.getSchemaMetadataByTarget(
+        optionsOrType as Type<unknown>,
+      );
+      if (schemaMetadata?.options) {
+        /**
+         * When options are provided (e.g., `@Schema({ timestamps: true })`)
+         * create a new nested schema for a subdocument
+         * @ref https://mongoosejs.com/docs/subdocs.html
+         **/
+
+        return new mongoose.Schema(schemaDefinition, schemaMetadata.options);
+      }
+      return schemaDefinition;
+    } else if (typeof optionsOrType.type === 'function') {
+      optionsOrType.type = this.inspectTypeDefinition(optionsOrType.type);
+      return optionsOrType;
+    } else if (Array.isArray(optionsOrType)) {
+      return optionsOrType.length > 0
+        ? [this.inspectTypeDefinition(optionsOrType[0])]
+        : optionsOrType;
     }
-    return options;
+    return optionsOrType;
   }
 
   private static isPrimitive(type: Function) {
