@@ -18,8 +18,8 @@ export function createMongooseProviders(
             option.schema,
             option.collection,
           );
-          (option.discriminators || []).forEach(({ name, schema }) =>
-            model.discriminator(name, schema),
+          (option.discriminators || []).forEach(({ name, schema, value }) =>
+            model.discriminator(name, schema, value),
           );
           return model;
         },
@@ -55,8 +55,8 @@ export function createMongooseAsyncProviders(
             schema,
             option.collection,
           );
-          (option.discriminators || []).forEach(({ name, schema }) =>
-            model.discriminator(name, schema),
+          (option.discriminators || []).forEach(({ name, schema, value }) =>
+            model.discriminator(name, schema, value),
           );
           return model;
         },
