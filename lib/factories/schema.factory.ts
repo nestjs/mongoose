@@ -9,7 +9,7 @@ export class SchemaFactory {
     const schemaMetadata = TypeMetadataStorage.getSchemaMetadataByTarget(
       target,
     );
-    return new mongoose.Schema<T>(
+    return new mongoose.Schema(
       schemaDefinition,
       schemaMetadata && schemaMetadata.options,
     );

@@ -41,8 +41,8 @@ export class DefinitionsFactory {
   }
 
   private static inspectTypeDefinition(
-    optionsOrType: mongoose.SchemaTypeOpts<unknown> | Function,
-  ): PropOptions {
+    optionsOrType: mongoose.SchemaTypeOptions<unknown> | Function,
+  ): PropOptions | [PropOptions] | Function {
     if (typeof optionsOrType === 'function') {
       if (this.isPrimitive(optionsOrType)) {
         return optionsOrType;
@@ -72,7 +72,7 @@ export class DefinitionsFactory {
     } else if (Array.isArray(optionsOrType)) {
       return optionsOrType.length > 0
         ? [this.inspectTypeDefinition(optionsOrType[0])]
-        : optionsOrType;
+        : (optionsOrType as any);
     }
     return optionsOrType;
   }

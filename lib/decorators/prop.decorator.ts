@@ -4,13 +4,11 @@ import { RAW_OBJECT_DEFINITION } from '../mongoose.constants';
 import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 
 const TYPE_METADATA_KEY = 'design:type';
-
 /**
  * Interface defining property options that can be passed to `@Prop()` decorator.
  */
 export type PropOptions =
-  | mongoose.SchemaTypeOpts<any>
-  | mongoose.Schema
+  | mongoose.SchemaDefinition['string']
   | mongoose.SchemaType;
 
 /**
@@ -19,7 +17,7 @@ export type PropOptions =
  */
 export function Prop(options?: PropOptions): PropertyDecorator {
   return (target: object, propertyKey: string | symbol) => {
-    options = (options || {}) as mongoose.SchemaTypeOpts<unknown>;
+    options = (options || {}) as mongoose.SchemaTypeOptions<unknown>;
 
     const isRawDefinition = options[RAW_OBJECT_DEFINITION];
     if (!options.type && !Array.isArray(options) && !isRawDefinition) {
@@ -40,7 +38,7 @@ export function Prop(options?: PropOptions): PropertyDecorator {
     TypeMetadataStorage.addPropertyMetadata({
       target: target.constructor,
       propertyKey: propertyKey as string,
-      options,
+      options: options as PropOptions,
     });
   };
 }
