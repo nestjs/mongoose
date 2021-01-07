@@ -29,6 +29,8 @@ export class DefinitionsFactory {
       }
       schemaMetadata.properties?.forEach((item) => {
         const options = this.inspectTypeDefinition(item.options as any);
+        this.inspectRef(item.options as any);
+
         schemaDefinition = {
           [item.propertyKey]: options as any,
           ...schemaDefinition,
@@ -49,6 +51,10 @@ export class DefinitionsFactory {
       } else if (this.isMongooseSchemaType(optionsOrType)) {
         return optionsOrType;
       }
+      const isClass = /^class\s/.test(
+        Function.prototype.toString.call(optionsOrType),
+      );
+      optionsOrType = isClass ? optionsOrType : optionsOrType();
 
       const schemaDefinition = this.createForClass(
         optionsOrType as Type<unknown>,
@@ -75,6 +81,22 @@ export class DefinitionsFactory {
         : (optionsOrType as any);
     }
     return optionsOrType;
+  }
+
+  private static inspectRef(
+    optionsOrType: mongoose.SchemaTypeOptions<unknown> | Function,
+  ) {
+    if (!optionsOrType || typeof optionsOrType !== 'object') {
+      return;
+    }
+    if (typeof optionsOrType?.ref === 'function') {
+      optionsOrType.ref =
+        (optionsOrType.ref as Function)()?.name ?? optionsOrType.ref;
+    } else if (Array.isArray(optionsOrType.type)) {
+      if (optionsOrType.type.length > 0) {
+        this.inspectRef(optionsOrType.type[0]);
+      }
+    }
   }
 
   private static isPrimitive(type: Function) {

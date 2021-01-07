@@ -3,6 +3,15 @@ import { DefinitionsFactory, Prop, raw, Schema } from '../../lib';
 import { CannotDetermineTypeError } from '../../lib/errors';
 
 @Schema()
+class RefClass {
+  @Prop()
+  title: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: () => ExampleClass })
+  host;
+}
+
+@Schema()
 class ChildClass {
   @Prop()
   id: number;
@@ -45,8 +54,16 @@ class ExampleClass {
   @Prop()
   number: number;
 
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: () => RefClass }],
+  })
+  ref: RefClass[];
+
   @Prop({ required: true })
-  children: ChildClass;
+  child: ChildClass;
+
+  @Prop({ type: () => ChildClass })
+  child2: ChildClass;
 
   @Prop([ChildClass])
   nodes: ChildClass[];
@@ -71,6 +88,14 @@ describe('DefinitionsFactory', () => {
       objectId: {
         type: mongoose.Schema.Types.ObjectId,
       },
+      ref: {
+        type: [
+          {
+            ref: 'RefClass',
+            type: mongoose.Schema.Types.ObjectId,
+          },
+        ],
+      },
       name: {
         required: true,
         type: String,
@@ -87,8 +112,18 @@ describe('DefinitionsFactory', () => {
       ],
       buffer: { type: mongoose.Schema.Types.Buffer },
       decimal: { type: mongoose.Schema.Types.Decimal128 },
-      children: {
+      child: {
         required: true,
+        type: {
+          id: {
+            type: Number,
+          },
+          name: {
+            type: String,
+          },
+        },
+      },
+      child2: {
         type: {
           id: {
             type: Number,
@@ -114,6 +149,19 @@ describe('DefinitionsFactory', () => {
       },
       mixed: { type: mongoose.Schema.Types.Mixed },
       number: { type: Number },
+    });
+  });
+
+  it('should generate a valid schema definition (class reference) for cyclic deps', () => {
+    const refClassDefinition = DefinitionsFactory.createForClass(RefClass);
+    expect(refClassDefinition).toEqual({
+      host: {
+        ref: 'ExampleClass',
+        type: mongoose.Schema.Types.ObjectId,
+      },
+      title: {
+        type: String,
+      },
     });
   });
 
