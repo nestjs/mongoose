@@ -90,8 +90,18 @@ export class DefinitionsFactory {
       return;
     }
     if (typeof optionsOrType?.ref === 'function') {
-      optionsOrType.ref =
-        (optionsOrType.ref as Function)()?.name ?? optionsOrType.ref;
+      try {
+        optionsOrType.ref =
+          (optionsOrType.ref as Function)()?.name ?? optionsOrType.ref;
+      } catch (err) {
+        if (err instanceof TypeError) {
+          const refClassName = (optionsOrType.ref as Function)?.name;
+          throw new Error(
+            `Unsupported syntax: Class constructor "${refClassName}" cannot be invoked without 'new'. Make sure to wrap your class reference in an arrow function (for example, "ref: () => ${refClassName}").`,
+          );
+        }
+        throw err;
+      }
     } else if (Array.isArray(optionsOrType.type)) {
       if (optionsOrType.type.length > 0) {
         this.inspectRef(optionsOrType.type[0]);
