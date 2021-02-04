@@ -9,6 +9,7 @@ const TYPE_METADATA_KEY = 'design:type';
  */
 export type PropOptions =
   | mongoose.SchemaDefinition['string']
+  | any
   | mongoose.SchemaType;
 
 /**
