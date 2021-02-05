@@ -7,8 +7,8 @@ const TYPE_METADATA_KEY = 'design:type';
 /**
  * Interface defining property options that can be passed to `@Prop()` decorator.
  */
-export type PropOptions =
-  | mongoose.SchemaDefinition['string']
+export type PropOptions<T = any> =
+  | Partial<mongoose.SchemaDefinitionProperty<T>>
   | mongoose.SchemaType;
 
 /**
