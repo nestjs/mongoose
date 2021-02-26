@@ -1,20 +1,7 @@
 import { Provider } from '@nestjs/common';
 import { Connection, Document, Model } from 'mongoose';
 import { getConnectionToken, getModelToken } from './common/mongoose.utils';
-import {
-  AsyncModelFactory,
-  DiscriminatorOptions,
-  ModelDefinition,
-} from './interfaces';
-
-function addDiscriminators(
-  model: Model<Document>,
-  discriminators: DiscriminatorOptions[] = [],
-) {
-  discriminators.forEach(({ name, schema }) =>
-    model.discriminator(name, schema),
-  );
-}
+import { AsyncModelFactory, ModelDefinition } from './interfaces';
 
 export function createMongooseProviders(
   connectionName?: string,
@@ -23,7 +10,12 @@ export function createMongooseProviders(
   return options.reduce(
     (providers, option) => [
       ...providers,
-      ...createMongooseProviders(connectionName, option.discriminators),
+      ...(option.discriminators || []).map((d) => ({
+        provide: getModelToken(d.name),
+        useFactory: (model: Model<Document>) =>
+          model.discriminator(d.name, d.schema),
+        inject: [getModelToken(option.name)],
+      })),
       {
         provide: getModelToken(option.name),
         useFactory: (connection: Connection) => {
@@ -32,7 +24,6 @@ export function createMongooseProviders(
             option.schema,
             option.collection,
           );
-          addDiscriminators(model, option.discriminators);
           return model;
         },
         inject: [getConnectionToken(connectionName)],
@@ -58,19 +49,16 @@ export function createMongooseAsyncProviders(
             schema,
             option.collection,
           );
-          addDiscriminators(model, option.discriminators);
           return model;
         },
         inject: [getConnectionToken(connectionName), ...(option.inject || [])],
       },
-      // discriminators must convert to `AsyncModelFactory`.
-      // Otherwise, the discriminators will register as `Model` before `model.discriminator` and throw OverwriteModelError
-      ...createMongooseAsyncProviders(
-        connectionName,
-        (option.discriminators || []).map<AsyncModelFactory>(
-          ({ name, schema }) => ({ name, useFactory: async () => schema }),
-        ),
-      ),
+      ...(option.discriminators || []).map((d) => ({
+        provide: getModelToken(d.name),
+        useFactory: (model: Model<Document>) =>
+          model.discriminator(d.name, d.schema),
+        inject: [getModelToken(option.name)],
+      })),
     ];
   }, [] as Provider[]);
 }
