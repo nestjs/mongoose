@@ -18,6 +18,8 @@ export interface MongooseOptionsFactory {
     | MongooseModuleOptions;
 }
 
+export type MongooseModuleOptionsFactory = Omit<MongooseModuleOptions, 'connectionName'>
+
 export interface MongooseModuleAsyncOptions
   extends Pick<ModuleMetadata, 'imports'> {
   connectionName?: string;
@@ -25,6 +27,6 @@ export interface MongooseModuleAsyncOptions
   useClass?: Type<MongooseOptionsFactory>;
   useFactory?: (
     ...args: any[]
-  ) => Promise<MongooseModuleOptions> | MongooseModuleOptions;
+  ) => Promise<MongooseModuleOptionsFactory> | MongooseModuleOptionsFactory;
   inject?: any[];
 }
