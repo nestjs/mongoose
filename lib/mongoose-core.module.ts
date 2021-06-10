@@ -14,7 +14,7 @@ import { getConnectionToken, handleRetry } from './common/mongoose.utils';
 import {
   MongooseModuleAsyncOptions,
   MongooseModuleOptions,
-  MongooseModuleOptionsFactory,
+  MongooseModuleFactoryOptions,
   MongooseOptionsFactory,
 } from './interfaces/mongoose-options.interface';
 import {
@@ -84,7 +84,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
     const connectionProvider = {
       provide: mongooseConnectionName,
       useFactory: async (
-        mongooseModuleOptions: MongooseModuleOptionsFactory,
+        mongooseModuleOptions: MongooseModuleFactoryOptions,
       ): Promise<any> => {
         const {
           retryAttempts,
