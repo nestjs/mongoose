@@ -32,7 +32,7 @@ describe('SchemaFactory', () => {
 
     expect(schema.$timestamps).toBeDefined();
     expect(schema.options).toEqual(
-      jasmine.objectContaining({
+      expect.objectContaining({
         validateBeforeSave: false,
         _id: true,
         autoIndex: true,
@@ -41,8 +41,8 @@ describe('SchemaFactory', () => {
     );
 
     expect(schema.childSchemas[0].schema).toEqual(
-      jasmine.objectContaining({
-        options: jasmine.objectContaining({
+      expect.objectContaining({
+        options: expect.objectContaining({
           validateBeforeSave: false,
           _id: true,
           autoIndex: true,
