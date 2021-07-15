@@ -11,6 +11,6 @@ export class ClickLinkEvent implements Event {
   url: string;
 }
 
-export const ClieckLinkEventSchema = SchemaFactory.createForClass(
+export const ClickLinkEventSchema = SchemaFactory.createForClass(
   ClickLinkEvent,
 );

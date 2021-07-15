@@ -6,7 +6,7 @@ import { MongooseModule } from '../../lib';
 import { EventModule } from '../src/event/event.module';
 import {
   ClickLinkEvent,
-  ClieckLinkEventSchema,
+  ClickLinkEventSchema,
 } from '../src/event/schemas/click-link-event.schema';
 import { Event, EventSchema } from '../src/event/schemas/event.schema';
 import {
@@ -22,7 +22,11 @@ const testCase: [string, DynamicModule][] = [
         name: Event.name,
         schema: EventSchema,
         discriminators: [
-          { name: ClickLinkEvent.name, schema: ClieckLinkEventSchema },
+          {
+            name: ClickLinkEvent.name,
+            schema: ClickLinkEventSchema,
+            value: 'click_link',
+          },
           { name: SignUpEvent.name, schema: SignUpEventSchema },
         ],
       },
@@ -35,7 +39,11 @@ const testCase: [string, DynamicModule][] = [
         name: Event.name,
         useFactory: async () => EventSchema,
         discriminators: [
-          { name: ClickLinkEvent.name, schema: ClieckLinkEventSchema },
+          {
+            name: ClickLinkEvent.name,
+            schema: ClickLinkEventSchema,
+            value: 'click_link',
+          },
           { name: SignUpEvent.name, schema: SignUpEventSchema },
         ],
       },
@@ -72,7 +80,7 @@ describe.each(testCase)('Discriminator - %s', (_, features) => {
     expect(response.status).toBe(HttpStatus.CREATED);
     expect(response.body).toMatchObject({
       ...createDto,
-      kind: expect.any(String),
+      kind: expect.stringMatching('click_link'),
       time: expect.any(String),
     });
   });
@@ -85,7 +93,7 @@ describe.each(testCase)('Discriminator - %s', (_, features) => {
     expect(response.status).toBe(HttpStatus.CREATED);
     expect(response.body).toMatchObject({
       ...createDto,
-      kind: expect.any(String),
+      kind: expect.stringMatching(SignUpEvent.name),
       time: expect.any(String),
     });
   });
