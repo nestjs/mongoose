@@ -14,9 +14,23 @@ export class SchemaFactory {
     const schemaMetadata = TypeMetadataStorage.getSchemaMetadataByTarget(
       target,
     );
-    return new mongoose.Schema<TDocument>(
+    const schema = new mongoose.Schema<TDocument>(
       schemaDefinition,
       schemaMetadata && schemaMetadata.options,
     );
+    
+    // iterares over the methods of the target class
+    // and maps the functions to the schema methods
+    // reference https://mongoosejs.com/docs/guide.html#methods
+    for (const propName of Object.getOwnPropertyNames(target.prototype)) {
+      const prop = target.prototype[propName];
+      // maps only the functions and ignores the constructor
+      if (typeof prop == 'function' && propName != 'constructor') {
+        schema.methods[propName] = prop;
+      }
+    }
+
+    return schema;
   }
 }
+
