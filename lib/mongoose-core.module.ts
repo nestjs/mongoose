@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import * as mongoose from 'mongoose';
-import { defer } from 'rxjs';
+import { defer, lastValueFrom } from 'rxjs';
 import { getConnectionToken, handleRetry } from './common/mongoose.utils';
 import {
   MongooseModuleAsyncOptions,
@@ -53,18 +53,18 @@ export class MongooseCoreModule implements OnApplicationShutdown {
     const connectionProvider = {
       provide: mongooseConnectionName,
       useFactory: async (): Promise<any> =>
-        await defer(async () =>
-          mongooseConnectionFactory(
-            mongoose.createConnection(uri, {
-              useNewUrlParser: true,
-              useUnifiedTopology: true,
-              ...mongooseOptions,
-            }),
-            mongooseConnectionName,
-          ),
-        )
-          .pipe(handleRetry(retryAttempts, retryDelay))
-          .toPromise(),
+        await lastValueFrom(
+          defer(async () =>
+            mongooseConnectionFactory(
+              mongoose.createConnection(uri, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                ...mongooseOptions,
+              }),
+              mongooseConnectionName,
+            ),
+          ).pipe(handleRetry(retryAttempts, retryDelay)),
+        ),
     };
     return {
       module: MongooseCoreModule,
@@ -98,23 +98,23 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         const mongooseConnectionFactory =
           connectionFactory || ((connection) => connection);
 
-        return await defer(async () =>
-          mongooseConnectionFactory(
-            mongoose.createConnection(mongooseModuleOptions.uri as string, {
-              useNewUrlParser: true,
-              useUnifiedTopology: true,
-              ...mongooseOptions,
-            }),
-            mongooseConnectionName,
-          ),
-        )
-          .pipe(
+        return await lastValueFrom(
+          defer(async () =>
+            mongooseConnectionFactory(
+              mongoose.createConnection(mongooseModuleOptions.uri as string, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                ...mongooseOptions,
+              }),
+              mongooseConnectionName,
+            ),
+          ).pipe(
             handleRetry(
               mongooseModuleOptions.retryAttempts,
               mongooseModuleOptions.retryDelay,
             ),
-          )
-          .toPromise();
+          ),
+        );
       },
       inject: [MONGOOSE_MODULE_OPTIONS],
     };
