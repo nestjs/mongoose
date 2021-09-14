@@ -11,13 +11,13 @@ export function createMongooseProviders(
     (providers, option) => [
       ...providers,
       ...(option.discriminators || []).map((d) => ({
-        provide: getModelToken(d.name),
+        provide: getModelToken(d.name, connectionName),
         useFactory: (model: Model<Document>) =>
           model.discriminator(d.name, d.schema),
-        inject: [getModelToken(option.name)],
+        inject: [getModelToken(option.name, connectionName)],
       })),
       {
-        provide: getModelToken(option.name),
+        provide: getModelToken(option.name, connectionName),
         useFactory: (connection: Connection) => {
           const model = connection.model(
             option.name,
@@ -41,7 +41,7 @@ export function createMongooseAsyncProviders(
     return [
       ...providers,
       {
-        provide: getModelToken(option.name),
+        provide: getModelToken(option.name, connectionName),
         useFactory: async (connection: Connection, ...args: unknown[]) => {
           const schema = await option.useFactory(...args);
           const model = connection.model(
@@ -54,10 +54,10 @@ export function createMongooseAsyncProviders(
         inject: [getConnectionToken(connectionName), ...(option.inject || [])],
       },
       ...(option.discriminators || []).map((d) => ({
-        provide: getModelToken(d.name),
+        provide: getModelToken(d.name, connectionName),
         useFactory: (model: Model<Document>) =>
           model.discriminator(d.name, d.schema),
-        inject: [getModelToken(option.name)],
+        inject: [getModelToken(option.name, connectionName)],
       })),
     ];
   }, [] as Provider[]);
