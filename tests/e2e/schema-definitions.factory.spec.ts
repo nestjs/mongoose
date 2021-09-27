@@ -174,7 +174,7 @@ describe('DefinitionsFactory', () => {
       DefinitionsFactory.createForClass(AmbiguousField);
     } catch (err) {
       expect(err).toBeInstanceOf(CannotDetermineTypeError);
-      expect(err.message).toEqual(
+      expect((err as Error).message).toEqual(
         'Cannot determine a type for the "AmbiguousField.randomField" field (union/intersection/ambiguous type was used). Make sure your property is decorated with a "@Prop({ type: TYPE_HERE })" decorator.',
       );
     }
