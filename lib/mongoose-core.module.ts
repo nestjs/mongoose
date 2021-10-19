@@ -56,7 +56,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         await lastValueFrom(
           defer(async () =>
             mongooseConnectionFactory(
-              mongoose.createConnection(uri, mongooseOptions),
+              await mongoose.createConnection(uri, mongooseOptions).asPromise(),
               mongooseConnectionName,
             ),
           ).pipe(handleRetry(retryAttempts, retryDelay)),
