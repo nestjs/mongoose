@@ -97,10 +97,12 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         return await lastValueFrom(
           defer(async () =>
             mongooseConnectionFactory(
-              mongoose.createConnection(
-                mongooseModuleOptions.uri as string,
-                mongooseOptions,
-              ),
+              await mongoose
+                .createConnection(
+                  mongooseModuleOptions.uri as string,
+                  mongooseOptions,
+                )
+                .asPromise(),
               mongooseConnectionName,
             ),
           ).pipe(
