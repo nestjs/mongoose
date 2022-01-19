@@ -20,7 +20,7 @@
     "test:e2e:dev": "jest --config ./tests/jest-e2e.json --runInBand --watch"
   },
   "devDependencies": {
-    "@commitlint/cli": "16.0.2",
+    "@commitlint/cli": "16.0.3",
     "@commitlint/config-angular": "16.0.0",
     "@nestjs/common": "8.2.5",
     "@nestjs/core": "8.2.5",
