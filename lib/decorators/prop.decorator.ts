@@ -25,7 +25,7 @@ export function Prop(options?: PropOptions): PropertyDecorator {
 
       if (type === Array) {
         options.type = [];
-      } elseif (typeof type === 'function') {
+      } else if (typeof type === 'function') {
         options = { type: type };
       } else if (type && type !== Object) {
         options.type = type;
