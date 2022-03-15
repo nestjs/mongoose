@@ -8,7 +8,7 @@ export class TypeMetadataStorageHost {
   private properties = new Array<PropertyMetadata>();
 
   addPropertyMetadata(metadata: PropertyMetadata) {
-    this.properties.push(metadata);
+    this.properties.unshift(metadata);
   }
 
   addSchemaMetadata(metadata: SchemaMetadata) {
