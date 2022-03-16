@@ -38,7 +38,7 @@
     "jest": "27.5.1",
     "lint-staged": "12.3.5",
     "mongoose": "6.2.6",
-    "prettier": "2.5.1",
+    "prettier": "2.6.0",
     "reflect-metadata": "0.1.13",
     "release-it": "14.12.5",
     "rxjs": "7.5.5",
