@@ -3,8 +3,11 @@ import { Observable } from 'rxjs';
 import { delay, retryWhen, scan } from 'rxjs/operators';
 import { DEFAULT_DB_CONNECTION } from '../mongoose.constants';
 
-export function getModelToken(model: string) {
-  return `${model}Model`;
+export function getModelToken(model: string, connectionName?: string) {
+  if (connectionName === undefined) {
+    return `${model}Model`;
+  }
+  return `${getConnectionToken(connectionName)}/${model}Model`;
 }
 
 export function getConnectionToken(name?: string) {
