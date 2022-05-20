@@ -5,17 +5,16 @@ import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 import { DefinitionsFactory } from './definitions.factory';
 
 export class SchemaFactory {
-  static createForClass<
-    TClass extends any = any,
-    TDocument extends mongoose.Document = TClass extends mongoose.Document
-      ? TClass
-      : mongoose.Document<TClass>,
-  >(target: Type<TClass>): mongoose.Schema<TDocument> {
+  // TODO: remove unused, deprecated type argument
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  static createForClass<TClass = any, _TDeprecatedTypeArgument = any>(
+    target: Type<TClass>,
+  ): mongoose.Schema<TClass> {
     const schemaDefinition = DefinitionsFactory.createForClass(target);
     const schemaMetadata =
       TypeMetadataStorage.getSchemaMetadataByTarget(target);
-    return new mongoose.Schema<TDocument>(
-      schemaDefinition as SchemaDefinition<SchemaDefinitionType<TDocument>>,
+    return new mongoose.Schema<TClass>(
+      schemaDefinition as SchemaDefinition<SchemaDefinitionType<TClass>>,
       schemaMetadata && schemaMetadata.options,
     );
   }

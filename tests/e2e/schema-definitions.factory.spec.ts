@@ -84,6 +84,26 @@ class ExampleClass {
 describe('DefinitionsFactory', () => {
   it('should generate a valid schema definition', () => {
     const definition = DefinitionsFactory.createForClass(ExampleClass);
+
+    expect(Object.keys(definition)).toEqual([
+      'objectId',
+      'name',
+      'buffer',
+      'decimal',
+      'mixed',
+      'expiresAt',
+      'map',
+      'isEnabled',
+      'number',
+      'ref',
+      'child',
+      'child2',
+      'nodes',
+      'customArray',
+      'customObject',
+      'any',
+      'array',
+    ]);
     expect(definition).toEqual({
       objectId: {
         type: mongoose.Schema.Types.ObjectId,
