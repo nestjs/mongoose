@@ -44,7 +44,7 @@ export class DefinitionsFactory {
 
   private static inspectTypeDefinition(
     optionsOrType: mongoose.SchemaTypeOptions<unknown> | Function,
-  ): PropOptions | [PropOptions] | Function {
+  ): PropOptions | [PropOptions] | Function | mongoose.Schema {
     if (typeof optionsOrType === 'function') {
       if (this.isPrimitive(optionsOrType)) {
         return optionsOrType;
@@ -69,7 +69,10 @@ export class DefinitionsFactory {
          * @ref https://mongoosejs.com/docs/subdocs.html
          **/
 
-        return new mongoose.Schema(schemaDefinition, schemaMetadata.options);
+        return new mongoose.Schema(
+          schemaDefinition,
+          schemaMetadata.options,
+        ) as mongoose.Schema;
       }
       return schemaDefinition;
     } else if (typeof optionsOrType.type === 'function') {
