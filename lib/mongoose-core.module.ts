@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   DynamicModule,
   Global,
@@ -14,6 +13,7 @@ import { defer, lastValueFrom } from 'rxjs';
 import { getConnectionToken, handleRetry } from './common/mongoose.utils';
 import {
   MongooseModuleAsyncOptions,
+  MongooseModuleFactoryOptions,
   MongooseModuleOptions,
   MongooseOptionsFactory,
 } from './interfaces/mongoose-options.interface';
@@ -80,12 +80,11 @@ export class MongooseCoreModule implements OnApplicationShutdown {
     const connectionProvider = {
       provide: mongooseConnectionName,
       useFactory: async (
-        mongooseModuleOptions: MongooseModuleOptions,
+        mongooseModuleOptions: MongooseModuleFactoryOptions,
       ): Promise<any> => {
         const {
           retryAttempts,
           retryDelay,
-          connectionName,
           uri,
           connectionFactory,
           ...mongooseOptions
@@ -98,19 +97,11 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           defer(async () =>
             mongooseConnectionFactory(
               await mongoose
-                .createConnection(
-                  mongooseModuleOptions.uri as string,
-                  mongooseOptions,
-                )
+                .createConnection(uri as string, mongooseOptions)
                 .asPromise(),
               mongooseConnectionName,
             ),
-          ).pipe(
-            handleRetry(
-              mongooseModuleOptions.retryAttempts,
-              mongooseModuleOptions.retryDelay,
-            ),
-          ),
+          ).pipe(handleRetry(retryAttempts, retryDelay)),
         );
       },
       inject: [MONGOOSE_MODULE_OPTIONS],
