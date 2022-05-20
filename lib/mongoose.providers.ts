@@ -13,7 +13,7 @@ export function createMongooseProviders(
       ...(option.discriminators || []).map((d) => ({
         provide: getModelToken(d.name, connectionName),
         useFactory: (model: Model<Document>) =>
-          model.discriminator(d.name, d.schema),
+          model.discriminator(d.name, d.schema, d.value),
         inject: [getModelToken(option.name, connectionName)],
       })),
       {
@@ -56,7 +56,7 @@ export function createMongooseAsyncProviders(
       ...(option.discriminators || []).map((d) => ({
         provide: getModelToken(d.name, connectionName),
         useFactory: (model: Model<Document>) =>
-          model.discriminator(d.name, d.schema),
+          model.discriminator(d.name, d.schema, d.value),
         inject: [getModelToken(option.name, connectionName)],
       })),
     ];
