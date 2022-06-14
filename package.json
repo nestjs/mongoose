@@ -52,7 +52,7 @@
     "@nestjs/core": "^6.0.0 || ^7.0.0 || ^8.0.0",
     "mongoose": "^6.0.2",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^6.0.0 || ^7.0.0"
+    "rxjs": "^7.0.0"
   },
   "lint-staged": {
     "*.ts": [
