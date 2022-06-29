@@ -35,7 +35,7 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.1.0",
     "husky": "8.0.1",
-    "jest": "28.1.1",
+    "jest": "28.1.2",
     "lint-staged": "13.0.3",
     "mongoose": "6.4.1",
     "prettier": "2.7.1",
