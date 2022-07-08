@@ -2,10 +2,16 @@ import { Type } from '@nestjs/common';
 import { PropertyMetadata } from '../metadata/property-metadata.interface';
 import { SchemaMetadata } from '../metadata/schema-metadata.interface';
 import { isTargetEqual } from '../utils/is-target-equal-util';
+import { MethodMetadata } from '../metadata/method-metadata.interface';
 
 export class TypeMetadataStorageHost {
   private schemas = new Array<SchemaMetadata>();
   private properties = new Array<PropertyMetadata>();
+  private methods = new Array<MethodMetadata>();
+
+  addMethodMetadata(metadata: MethodMetadata) {
+    this.methods.unshift(metadata);
+  }
 
   addPropertyMetadata(metadata: PropertyMetadata) {
     this.properties.unshift(metadata);
@@ -26,12 +32,22 @@ export class TypeMetadataStorageHost {
     if (!metadata.properties) {
       metadata.properties = this.getClassFieldsByPredicate(belongsToClass);
     }
+
+    if (!metadata.methods) {
+      metadata.methods = this.getClassMethodsByPredicate(belongsToClass);
+    }
   }
 
   private getClassFieldsByPredicate(
     belongsToClass: (item: PropertyMetadata) => boolean,
   ) {
     return this.properties.filter(belongsToClass);
+  }
+
+  private getClassMethodsByPredicate(
+    belongsToClass: (item: MethodMetadata) => boolean,
+  ) {
+    return this.methods.filter(belongsToClass);
   }
 }
 
