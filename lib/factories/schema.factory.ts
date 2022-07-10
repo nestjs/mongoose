@@ -19,7 +19,7 @@ export class SchemaFactory {
       schemaMetadata && schemaMetadata.options,
     );
 
-    SchemaMethodsFactory.createForClass(target, schema, schemaMetadata);
+    SchemaMethodsFactory.createForClass(schema, schemaMetadata);
 
     return schema;
   }
