@@ -11,7 +11,7 @@ export function Method(): MethodDecorator {
     descriptor: PropertyDescriptor,
   ) => {
     TypeMetadataStorage.addMethodMetadata({
-      target,
+      target: target.constructor,
       propertyKey: propertyKey as string,
       descriptor,
     });

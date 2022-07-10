@@ -1,4 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '../../lib';
+import { Method } from '../../lib';
+import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
+import * as util from 'util';
 
 @Schema({ validateBeforeSave: false, _id: true, autoIndex: true })
 class ChildClass {
@@ -24,12 +28,29 @@ class ExampleClass {
 
   @Prop()
   array: Array<any>;
+
+  @Prop()
+  name: string;
+
+  @Method()
+  getName(): string {
+    return this.name;
+  }
+
+  @Method()
+  setName(newName: string): void {
+    this.name = newName;
+  }
 }
 
 describe('SchemaFactory', () => {
-  it('should populate the schema options', () => {
-    const schema = SchemaFactory.createForClass(ExampleClass) as any;
+  const schema = SchemaFactory.createForClass(ExampleClass) as any;
+  const ExampleClassModel = mongoose.model(
+    ExampleClass.name,
+    schema,
+  ) as Model<ExampleClass>;
 
+  it('should populate the schema options', () => {
     expect(schema.$timestamps).toBeDefined();
     expect(schema.options).toEqual(
       expect.objectContaining({
@@ -49,5 +70,45 @@ describe('SchemaFactory', () => {
         }),
       }),
     );
+  });
+
+  describe('@Method decorator', () => {
+    it('schema should contain method getName', () => {
+      console.log(`schema is ${util.inspect(schema)}`);
+      expect(schema.methods.getName).toBeDefined();
+    });
+
+    it('schema should contain method setName', () => {
+      console.log(`schema is ${util.inspect(schema)}`);
+      expect(schema.methods.setName).toBeDefined();
+    });
+
+    it('model instance should contain method getName decorated with @Method() decorator', () => {
+      const exampleClassInstance = new ExampleClassModel({ name: 'Cat' });
+
+      expect(exampleClassInstance.getName).toBeDefined();
+    });
+
+    it('model instance should contain method setName decorated with @Method() decorator', () => {
+      const exampleClassInstance = new ExampleClassModel({ name: 'Cat' });
+
+      expect(exampleClassInstance.setName).toBeDefined();
+    });
+
+    it('method getName decorated with @Method() decorator should return the name property', () => {
+      const name = 'Cat';
+      const exampleClassInstance = new ExampleClassModel({ name });
+
+      expect(exampleClassInstance.getName()).toStrictEqual(name);
+    });
+
+    it('method setName decorated with @Method() decorator should change the name property', () => {
+      const name = 'Cat';
+      const exampleClassInstance = new ExampleClassModel({ name });
+
+      const anotherName = 'Dog';
+      exampleClassInstance.setName(anotherName);
+      expect(exampleClassInstance.name).toStrictEqual(anotherName);
+    });
   });
 });
