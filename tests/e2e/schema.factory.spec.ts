@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '../../lib';
 import { Method } from '../../lib';
 import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
-import * as util from 'util';
 
 @Schema({ validateBeforeSave: false, _id: true, autoIndex: true })
 class ChildClass {
@@ -74,12 +73,10 @@ describe('SchemaFactory', () => {
 
   describe('@Method decorator', () => {
     it('schema should contain method getName', () => {
-      console.log(`schema is ${util.inspect(schema)}`);
       expect(schema.methods.getName).toBeDefined();
     });
 
     it('schema should contain method setName', () => {
-      console.log(`schema is ${util.inspect(schema)}`);
       expect(schema.methods.setName).toBeDefined();
     });
 
