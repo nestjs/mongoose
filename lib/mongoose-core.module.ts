@@ -12,6 +12,8 @@ import * as mongoose from 'mongoose';
 import { defer, lastValueFrom } from 'rxjs';
 import { getConnectionToken, handleRetry } from './common/mongoose.utils';
 import {
+  MongooseDynamicConnection,
+  MongooseModuleDynamicConnectionOptions,
   MongooseModuleAsyncOptions,
   MongooseModuleFactoryOptions,
   MongooseModuleOptions,
@@ -19,12 +21,15 @@ import {
 } from './interfaces/mongoose-options.interface';
 import {
   MONGOOSE_CONNECTION_NAME,
+  MONGOOSE_DYNAMIC_CONNECTION,
   MONGOOSE_MODULE_OPTIONS,
 } from './mongoose.constants';
 
 @Global()
 @Module({})
 export class MongooseCoreModule implements OnApplicationShutdown {
+  private static dynamicConnections = new Map<string, mongoose.Connection>();
+
   constructor(
     @Inject(MONGOOSE_CONNECTION_NAME) private readonly connectionName: string,
     private readonly moduleRef: ModuleRef,
@@ -119,8 +124,82 @@ export class MongooseCoreModule implements OnApplicationShutdown {
     };
   }
 
+  static forRootDynamicConnection({
+    resolver,
+    options = {},
+  }: MongooseModuleDynamicConnectionOptions): DynamicModule {
+    const { retryAttempts, retryDelay, connectionFactory, ...mongooseOptions } =
+      options;
+
+    const mongooseConnectionNameProvider = {
+      provide: MONGOOSE_CONNECTION_NAME,
+      useValue: MONGOOSE_DYNAMIC_CONNECTION,
+    };
+
+    const mongooseConnectionFactory =
+      connectionFactory || ((connection) => connection);
+
+    const connectionProvider: Provider = {
+      provide: MONGOOSE_DYNAMIC_CONNECTION,
+      useFactory: (): MongooseDynamicConnection => {
+        const initNewConnection = (dynamicKey: string) => {
+          const resolved = resolver(dynamicKey);
+
+          const uri = typeof resolved === 'string' ? resolved : resolved?.uri;
+          const dbName =
+            typeof resolved === 'object'
+              ? resolved.dbName
+              : mongooseOptions.dbName;
+
+          return lastValueFrom<mongoose.Connection>(
+            defer(async () =>
+              mongooseConnectionFactory(
+                await mongoose
+                  .createConnection(uri, { ...mongooseOptions, dbName })
+                  .asPromise(),
+                dynamicKey,
+              ),
+            ).pipe(handleRetry(retryAttempts, retryDelay)),
+          );
+        };
+
+        const getConn = async (dynamicKey: string) => {
+          const conn = this.dynamicConnections.get(dynamicKey);
+          if (conn) return Promise.resolve(conn);
+
+          const newConn = await initNewConnection(dynamicKey);
+          this.dynamicConnections.set(dynamicKey, newConn);
+
+          return newConn;
+        };
+
+        const closeAll = async (conns: Map<string, mongoose.Connection>) => {
+          for (const key of conns.keys()) {
+            await conns.get(key)?.close();
+          }
+
+          conns.clear();
+        };
+
+        return { get: getConn, closeAll };
+      },
+    };
+
+    return {
+      module: MongooseCoreModule,
+      providers: [connectionProvider, mongooseConnectionNameProvider],
+      exports: [connectionProvider],
+    };
+  }
+
   async onApplicationShutdown() {
     const connection = this.moduleRef.get<any>(this.connectionName);
+
+    if (connection && this.connectionName === MONGOOSE_DYNAMIC_CONNECTION) {
+      connection.closeAll(MongooseCoreModule.dynamicConnections);
+      return;
+    }
+
     connection && (await connection.close());
   }
 

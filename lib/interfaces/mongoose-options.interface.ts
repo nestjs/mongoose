@@ -1,5 +1,6 @@
-import { ModuleMetadata, Type } from '@nestjs/common';
-import { ConnectOptions } from 'mongoose';
+import { FactoryProvider, ModuleMetadata, Type } from '@nestjs/common';
+import { Connection, ConnectOptions } from 'mongoose';
+import { ModelDefinition } from './model-definition.interface';
 
 export interface MongooseModuleOptions
   extends ConnectOptions,
@@ -17,7 +18,10 @@ export interface MongooseOptionsFactory {
     | MongooseModuleOptions;
 }
 
-export interface MongooseModuleFactoryOptions extends Omit<MongooseModuleOptions, 'connectionName'> {}
+export type MongooseModuleFactoryOptions = Omit<
+  MongooseModuleOptions,
+  'connectionName'
+>;
 
 export interface MongooseModuleAsyncOptions
   extends Pick<ModuleMetadata, 'imports'> {
@@ -28,4 +32,20 @@ export interface MongooseModuleAsyncOptions
     ...args: any[]
   ) => Promise<MongooseModuleFactoryOptions> | MongooseModuleFactoryOptions;
   inject?: any[];
+}
+
+export interface MongooseModuleDynamicConnectionOptions {
+  options?: Omit<MongooseModuleOptions, 'connectionName'>;
+  resolver(dynamicKey: string): string | { uri: string; dbName?: string };
+}
+
+export interface MongooseDynamicConnection {
+  get(dynamicKey: string): Promise<Connection>;
+  closeAll(conns: Map<string, Connection>): void;
+}
+
+export interface CreateMongooseDynamicProviders {
+  models: ModelDefinition[];
+  factory?: Omit<FactoryProvider, 'provide' | 'scope' | 'durable'>;
+  resolverKey?: (...any: any[]) => string;
 }

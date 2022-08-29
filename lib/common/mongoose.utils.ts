@@ -10,6 +10,10 @@ export function getModelToken(model: string, connectionName?: string) {
   return `${getConnectionToken(connectionName)}/${model}Model`;
 }
 
+export function getDynamicModelToken(model: string) {
+  return `${getModelToken(model)}Dynamic`;
+}
+
 export function getConnectionToken(name?: string) {
   return name && name !== DEFAULT_DB_CONNECTION
     ? `${name}Connection`

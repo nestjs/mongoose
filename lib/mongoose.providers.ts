@@ -1,7 +1,18 @@
-import { Provider } from '@nestjs/common';
+import { Provider, Scope } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
 import { Connection, Document, Model } from 'mongoose';
-import { getConnectionToken, getModelToken } from './common/mongoose.utils';
-import { AsyncModelFactory, ModelDefinition } from './interfaces';
+import {
+  getConnectionToken,
+  getDynamicModelToken,
+  getModelToken,
+} from './common/mongoose.utils';
+import {
+  AsyncModelFactory,
+  CreateMongooseDynamicProviders,
+  ModelDefinition,
+  MongooseDynamicConnection,
+} from './interfaces';
+import { MONGOOSE_DYNAMIC_CONNECTION } from './mongoose.constants';
 
 export function createMongooseProviders(
   connectionName?: string,
@@ -59,6 +70,41 @@ export function createMongooseAsyncProviders(
           model.discriminator(d.name, d.schema, d.value),
         inject: [getModelToken(option.name, connectionName)],
       })),
+    ];
+  }, [] as Provider[]);
+}
+
+export function createMongooseDynamicProviders({
+  models: options,
+  resolverKey,
+  factory,
+}: CreateMongooseDynamicProviders): Provider[] {
+  return options.reduce((providers, option) => {
+    const resolver = resolverKey ?? ((...req) => req[0].headers?.origin);
+
+    const useFactory = async (
+      pool: MongooseDynamicConnection,
+      ...any: any[]
+    ) => {
+      const conn = await pool.get(resolver(...any));
+      if (conn.models[option.name]) return conn.models[option.name];
+
+      const model = conn.model(option.name, option.schema, option.collection);
+
+      return model;
+    };
+
+    return [
+      ...providers,
+      {
+        provide: getDynamicModelToken(option.name),
+        useFactory: factory?.useFactory ?? useFactory,
+        scope: Scope.REQUEST,
+        inject: [
+          MONGOOSE_DYNAMIC_CONNECTION,
+          ...(factory?.inject ?? [REQUEST]),
+        ],
+      },
     ];
   }, [] as Provider[]);
 }
