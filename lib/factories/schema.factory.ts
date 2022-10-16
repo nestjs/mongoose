@@ -13,9 +13,15 @@ export class SchemaFactory {
     const schemaDefinition = DefinitionsFactory.createForClass(target);
     const schemaMetadata =
       TypeMetadataStorage.getSchemaMetadataByTarget(target);
-    return new mongoose.Schema<TClass>(
+    const plugins = TypeMetadataStorage.getPluginMetadataByTarget(target);
+
+    const schema = new mongoose.Schema<TClass>(
       schemaDefinition as SchemaDefinition<SchemaDefinitionType<TClass>>,
       schemaMetadata && schemaMetadata.options,
     );
+    plugins.forEach((item) => {
+      schema.plugin(item.pluginFn, item.options);
+    });
+    return schema;
   }
 }
