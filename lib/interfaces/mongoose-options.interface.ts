@@ -17,7 +17,10 @@ export interface MongooseOptionsFactory {
     | MongooseModuleOptions;
 }
 
-export interface MongooseModuleFactoryOptions extends Omit<MongooseModuleOptions, 'connectionName'> {}
+export type MongooseModuleFactoryOptions = Omit<
+  MongooseModuleOptions,
+  'connectionName'
+>;
 
 export interface MongooseModuleAsyncOptions
   extends Pick<ModuleMetadata, 'imports'> {
