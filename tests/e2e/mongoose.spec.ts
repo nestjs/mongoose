@@ -28,6 +28,9 @@ describe('Mongoose', () => {
         expect(body.name).toEqual(createDto.name);
         expect(body.age).toEqual(createDto.age);
         expect(body.breed).toEqual(createDto.breed);
+        expect(body.birthYear).toEqual(
+          new Date().getFullYear() - createDto.age,
+        );
         done();
       });
   });
