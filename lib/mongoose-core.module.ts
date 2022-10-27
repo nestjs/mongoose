@@ -68,8 +68,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           ).pipe(
             handleRetry(retryAttempts, retryDelay),
             catchError((error) => {
-              mongooseConnectionError(error);
-              throw error;
+              throw mongooseConnectionError(error);
             }),
           ),
         ),
@@ -107,7 +106,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           connectionFactory || ((connection) => connection);
 
         const mongooseConnectionError =
-          connectionError || ((error) => {});
+          connectionError || ((error) => error);
         
         return await lastValueFrom(
           defer(async () =>
@@ -120,8 +119,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           ).pipe(
             handleRetry(retryAttempts, retryDelay),
             catchError((error) => {
-              mongooseConnectionError(error);
-              throw error;
+              throw mongooseConnectionError(error);
             }),
           ),
         );
