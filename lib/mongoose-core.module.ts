@@ -48,7 +48,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       connectionFactory || ((connection) => connection);
 
     const mongooseConnectionError =
-      connectionError || ((error) => {});   
+      connectionError || ((error) => error);   
 
     const mongooseConnectionName = getConnectionToken(connectionName);
 
