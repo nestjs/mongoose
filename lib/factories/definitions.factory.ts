@@ -94,8 +94,8 @@ export class DefinitionsFactory {
     }
     if (typeof optionsOrType?.ref === 'function') {
       try {
-        optionsOrType.ref =
-          (optionsOrType.ref as Function)()?.name ?? optionsOrType.ref;
+        const result = (optionsOrType.ref as Function)();
+        optionsOrType.ref = result?.name ?? result;
       } catch (err) {
         if (err instanceof TypeError) {
           const refClassName = (optionsOrType.ref as Function)?.name;
