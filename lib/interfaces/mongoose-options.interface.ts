@@ -9,7 +9,7 @@ export interface MongooseModuleOptions
   retryDelay?: number;
   connectionName?: string;
   connectionFactory?: (connection: any, name: string) => any;
-  connectionError?: (error: MongooseError) => MongooseError;
+  connectionErrorFactory?: (error: MongooseError) => MongooseError;
 }
 
 export interface MongooseOptionsFactory {

@@ -40,7 +40,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       retryDelay,
       connectionName,
       connectionFactory,
-      connectionError,
+      connectionErrorFactory,
       ...mongooseOptions
     } = options;
 
@@ -48,7 +48,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       connectionFactory || ((connection) => connection);
 
     const mongooseConnectionError =
-      connectionError || ((error) => error);   
+    connectionErrorFactory || ((error) => error);   
 
     const mongooseConnectionName = getConnectionToken(connectionName);
 
@@ -98,7 +98,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           retryDelay,
           uri,
           connectionFactory,
-          connectionError,
+          connectionErrorFactory,
           ...mongooseOptions
         } = mongooseModuleOptions;
 
@@ -106,7 +106,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           connectionFactory || ((connection) => connection);
 
         const mongooseConnectionError =
-          connectionError || ((error) => error);
+        connectionErrorFactory || ((error) => error);
         
         return await lastValueFrom(
           defer(async () =>
