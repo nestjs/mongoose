@@ -10,6 +10,7 @@ import {
 import { ModuleRef } from '@nestjs/core';
 import * as mongoose from 'mongoose';
 import { defer, lastValueFrom } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { getConnectionToken, handleRetry } from './common/mongoose.utils';
 import {
   MongooseModuleAsyncOptions,
@@ -39,11 +40,16 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       retryDelay,
       connectionName,
       connectionFactory,
+      connectionErrorFactory,
       ...mongooseOptions
     } = options;
 
     const mongooseConnectionFactory =
       connectionFactory || ((connection) => connection);
+
+    const mongooseConnectionError =
+      connectionErrorFactory || ((error) => error);   
+
     const mongooseConnectionName = getConnectionToken(connectionName);
 
     const mongooseConnectionNameProvider = {
@@ -59,7 +65,12 @@ export class MongooseCoreModule implements OnApplicationShutdown {
               await mongoose.createConnection(uri, mongooseOptions).asPromise(),
               mongooseConnectionName,
             ),
-          ).pipe(handleRetry(retryAttempts, retryDelay)),
+          ).pipe(
+            handleRetry(retryAttempts, retryDelay),
+            catchError((error) => {
+              throw mongooseConnectionError(error);
+            }),
+          ),
         ),
     };
     return {
@@ -87,12 +98,16 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           retryDelay,
           uri,
           connectionFactory,
+          connectionErrorFactory,
           ...mongooseOptions
         } = mongooseModuleOptions;
 
         const mongooseConnectionFactory =
           connectionFactory || ((connection) => connection);
 
+        const mongooseConnectionError =
+        connectionErrorFactory || ((error) => error);
+        
         return await lastValueFrom(
           defer(async () =>
             mongooseConnectionFactory(
@@ -101,7 +116,12 @@ export class MongooseCoreModule implements OnApplicationShutdown {
                 .asPromise(),
               mongooseConnectionName,
             ),
-          ).pipe(handleRetry(retryAttempts, retryDelay)),
+          ).pipe(
+            handleRetry(retryAttempts, retryDelay),
+            catchError((error) => {
+              throw mongooseConnectionError(error);
+            }),
+          ),
         );
       },
       inject: [MONGOOSE_MODULE_OPTIONS],
