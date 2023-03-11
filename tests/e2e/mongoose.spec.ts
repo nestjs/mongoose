@@ -32,6 +32,18 @@ describe('Mongoose', () => {
       });
   });
 
+  it(`should return updated document`, (done) => {
+    const updateDto = { name: 'Nest', breed: 'Maine coon', age: Date.now() };
+    request(server)
+      .put('/cats')
+      .send(updateDto)
+      .expect(200)
+      .end((err, { body }) => {
+        expect(body.modifiedCount).toBeGreaterThan(0);
+        done();
+      });
+  });
+
   afterEach(async () => {
     await app.close();
   });
