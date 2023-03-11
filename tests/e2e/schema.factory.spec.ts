@@ -26,6 +26,17 @@ class ExampleClass {
   array: Array<any>;
 }
 
+class BrokenClass {
+  @Prop({ required: true })
+  children: ChildClass;
+
+  @Prop([ChildClass])
+  nodes: ChildClass[];
+
+  @Prop()
+  array: Array<any>;
+}
+
 describe('SchemaFactory', () => {
   it('should populate the schema options', () => {
     const schema = SchemaFactory.createForClass(ExampleClass) as any;
@@ -49,5 +60,8 @@ describe('SchemaFactory', () => {
         }),
       }),
     );
+  });
+  it('should break the schema', () => {
+    expect(() => SchemaFactory.createForClass(BrokenClass)).toThrow(Error);
   });
 });
