@@ -24,8 +24,9 @@ export class DefinitionsFactory {
         parent as Type<unknown>,
       );
       if (!schemaMetadata) {
-        parent = Object.getPrototypeOf(parent);
-        continue;
+        throw new Error(
+          `Target class "${target}" passed in to the "DefinitionsFactory#createForClass()" method isn't a @Schema.`,
+        );
       }
       schemaMetadata.properties?.forEach((item) => {
         const options = this.inspectTypeDefinition(item.options as any);
