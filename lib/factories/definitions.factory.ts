@@ -25,7 +25,7 @@ export class DefinitionsFactory {
       );
       if (!schemaMetadata) {
         throw new Error(
-          `Target class "${target}" passed in to the "DefinitionsFactory#createForClass()" method isn't a @Schema.`,
+          `Target class "${target}" passed in to the "DefinitionsFactory#createForClass()" method isn't annotated with the "@Schema" decorator.`,
         );
       }
       schemaMetadata.properties?.forEach((item) => {
