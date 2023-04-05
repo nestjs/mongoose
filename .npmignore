@@ -1,6 +1,11 @@
 # source
 lib
 index.ts
+
+# tests
+/tests
+
+# misc
 package-lock.json
 .eslintrc.js
 tsconfig.json
@@ -8,3 +13,8 @@ tsconfig.build.json
 .prettierrc
 .prettierrc
 .commitlintrc.json
+docker-compose.yml
+.husky/
+.github/
+.circleci/
+renovate.json
