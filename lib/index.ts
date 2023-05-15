@@ -4,4 +4,6 @@ export * from './errors';
 export * from './factories';
 export * from './interfaces';
 export * from './mongoose.module';
+export * from './typeguards';
+export * from './types';
 export * from './utils';
