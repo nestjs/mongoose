@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import * as mongoose from 'mongoose';
-import { Connection, ConnectOptions } from 'mongoose';
+import { ConnectOptions, Connection } from 'mongoose';
 import { defer, lastValueFrom } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { getConnectionToken, handleRetry } from './common/mongoose.utils';
@@ -120,7 +120,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           defer(async () =>
             mongooseConnectionFactory(
               await this.createMongooseConnection(
-                uri,
+                uri as string,
                 mongooseOptions,
                 lazyConnection,
               ),
