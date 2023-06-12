@@ -5,6 +5,8 @@
   "author": "Kamil Mysliwiec",
   "repository": "https://github.com/nestjs/mongoose.git",
   "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint \"lib/**/*.ts\" --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
