@@ -1,9 +1,7 @@
 import { ModuleMetadata, Type } from '@nestjs/common';
 import { ConnectOptions, MongooseError } from 'mongoose';
 
-export interface MongooseModuleOptions
-  extends ConnectOptions,
-    Record<string, any> {
+export interface MongooseModuleOptions extends ConnectOptions {
   uri?: string;
   retryAttempts?: number;
   retryDelay?: number;
