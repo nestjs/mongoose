@@ -8,6 +8,7 @@ export interface MongooseModuleOptions extends ConnectOptions {
   connectionName?: string;
   connectionFactory?: (connection: any, name: string) => any;
   connectionErrorFactory?: (error: MongooseError) => MongooseError;
+  lazyConnection?: boolean;
 }
 
 export interface MongooseOptionsFactory {
