@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import * as mongoose from 'mongoose';
+import { ConnectOptions, Connection } from 'mongoose';
 import { defer, lastValueFrom } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { getConnectionToken, handleRetry } from './common/mongoose.utils';
@@ -41,6 +42,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       connectionName,
       connectionFactory,
       connectionErrorFactory,
+      lazyConnection,
       ...mongooseOptions
     } = options;
 
@@ -48,7 +50,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       connectionFactory || ((connection) => connection);
 
     const mongooseConnectionError =
-      connectionErrorFactory || ((error) => error);   
+      connectionErrorFactory || ((error) => error);
 
     const mongooseConnectionName = getConnectionToken(connectionName);
 
@@ -56,13 +58,18 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       provide: MONGOOSE_CONNECTION_NAME,
       useValue: mongooseConnectionName,
     };
+
     const connectionProvider = {
       provide: mongooseConnectionName,
       useFactory: async (): Promise<any> =>
         await lastValueFrom(
           defer(async () =>
             mongooseConnectionFactory(
-              await mongoose.createConnection(uri, mongooseOptions).asPromise(),
+              await this.createMongooseConnection(
+                uri,
+                mongooseOptions,
+                lazyConnection,
+              ),
               mongooseConnectionName,
             ),
           ).pipe(
@@ -99,6 +106,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           uri,
           connectionFactory,
           connectionErrorFactory,
+          lazyConnection,
           ...mongooseOptions
         } = mongooseModuleOptions;
 
@@ -106,14 +114,16 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           connectionFactory || ((connection) => connection);
 
         const mongooseConnectionError =
-        connectionErrorFactory || ((error) => error);
-        
+          connectionErrorFactory || ((error) => error);
+
         return await lastValueFrom(
           defer(async () =>
             mongooseConnectionFactory(
-              await mongoose
-                .createConnection(uri as string, mongooseOptions)
-                .asPromise(),
+              await this.createMongooseConnection(
+                uri as string,
+                mongooseOptions,
+                lazyConnection,
+              ),
               mongooseConnectionName,
             ),
           ).pipe(
@@ -137,11 +147,6 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       ],
       exports: [connectionProvider],
     };
-  }
-
-  async onApplicationShutdown() {
-    const connection = this.moduleRef.get<any>(this.connectionName);
-    connection && (await connection.close());
   }
 
   private static createAsyncProviders(
@@ -180,5 +185,24 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         await optionsFactory.createMongooseOptions(),
       inject,
     };
+  }
+
+  private static async createMongooseConnection(
+    uri: string,
+    mongooseOptions: ConnectOptions,
+    lazyConnection?: boolean,
+  ): Promise<Connection> {
+    const connection = mongoose.createConnection(uri, mongooseOptions);
+
+    if (lazyConnection) {
+      return connection;
+    }
+
+    return connection.asPromise();
+  }
+
+  async onApplicationShutdown() {
+    const connection = this.moduleRef.get<any>(this.connectionName);
+    connection && (await connection.close());
   }
 }

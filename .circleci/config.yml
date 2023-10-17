@@ -3,54 +3,54 @@ version: 2
 aliases:
   - &restore-cache
     restore_cache:
-        key: dependency-cache-{{ checksum "package.json" }}
+      key: dependency-cache-{{ checksum "package.json" }}
   - &install-deps
     run:
-        name: Install dependencies
-        command: npm ci
+      name: Install dependencies
+      command: npm ci --ignore-scripts
   - &build-packages
     run:
-        name: Build
-        command: npm run build
+      name: Build
+      command: npm run build
 
 jobs:
   build:
     working_directory: ~/nest
     docker:
-      - image: cimg/node:19.8
+      - image: cimg/node:20.3
     steps:
       - checkout
       - run:
           name: Update NPM version
-          command: sudo npm install -g npm@latest
+          command: sudo npm install -g npm@latest --ignore-scripts
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Install dependencies
-          command: npm ci
+          command: npm ci --ignore-scripts
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
           name: Build
-          command: npm run build    
+          command: npm run build
   integration_tests:
     working_directory: ~/nest
     machine: true
     steps:
       - checkout
-      - run: 
+      - run:
           name: Prepare nvm
           command: |
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
             echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-      - run: 
+      - run:
           name: Upgrade Node.js
           command: |
-            nvm install v12
+            nvm install v16
             node -v
-            nvm alias default v12
+            nvm alias default v16
       - run:
           name: Install Docker Compose
           command: |
@@ -78,4 +78,3 @@ workflows:
       - integration_tests:
           requires:
             - build
-      

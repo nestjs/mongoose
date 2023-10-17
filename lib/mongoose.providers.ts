@@ -19,7 +19,7 @@ export function createMongooseProviders(
       {
         provide: getModelToken(option.name, connectionName),
         useFactory: (connection: Connection) => {
-          const model = connection.model(
+          const model = connection.models[option.name] ? connection.models[option.name] : connection.model(
             option.name,
             option.schema,
             option.collection,
