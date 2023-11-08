@@ -75,7 +75,7 @@ export class DefinitionsFactory {
         ) as mongoose.Schema;
       }
       return schemaDefinition;
-    } else if (typeof optionsOrType.type === 'function') {
+    } else if (typeof optionsOrType.type === 'function' || Array.isArray(optionsOrType.type)) {
       optionsOrType.type = this.inspectTypeDefinition(optionsOrType.type);
       return optionsOrType;
     } else if (Array.isArray(optionsOrType)) {
