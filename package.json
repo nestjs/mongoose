@@ -43,7 +43,7 @@
     "mongoose": "8.1.0",
     "prettier": "3.2.4",
     "reflect-metadata": "0.1.14",
-    "release-it": "17.0.1",
+    "release-it": "17.0.3",
     "rxjs": "7.8.1",
     "supertest": "6.3.4",
     "ts-jest": "29.1.2",
