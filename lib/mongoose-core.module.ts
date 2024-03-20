@@ -43,6 +43,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       connectionFactory,
       connectionErrorFactory,
       lazyConnection,
+      onConnectionCreate,
       ...mongooseOptions
     } = options;
 
@@ -69,6 +70,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
                 uri,
                 mongooseOptions,
                 lazyConnection,
+                onConnectionCreate,
               ),
               mongooseConnectionName,
             ),
@@ -107,6 +109,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           connectionFactory,
           connectionErrorFactory,
           lazyConnection,
+          onConnectionCreate,
           ...mongooseOptions
         } = mongooseModuleOptions;
 
@@ -123,6 +126,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
                 uri as string,
                 mongooseOptions,
                 lazyConnection,
+                onConnectionCreate,
               ),
               mongooseConnectionName,
             ),
@@ -191,11 +195,17 @@ export class MongooseCoreModule implements OnApplicationShutdown {
     uri: string,
     mongooseOptions: ConnectOptions,
     lazyConnection?: boolean,
+    onConnectionCreate?: MongooseModuleOptions['onConnectionCreate'],
   ): Promise<Connection> {
     const connection = mongoose.createConnection(uri, mongooseOptions);
 
     if (lazyConnection) {
       return connection;
+    }
+
+    const mongooseOnConnectionCreate = onConnectionCreate || (() => {});
+    if (mongooseOnConnectionCreate) {
+      mongooseOnConnectionCreate(connection);
     }
 
     return connection.asPromise();
