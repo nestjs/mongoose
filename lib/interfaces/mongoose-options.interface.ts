@@ -1,5 +1,5 @@
 import { ModuleMetadata, Type } from '@nestjs/common';
-import { ConnectOptions, MongooseError } from 'mongoose';
+import { ConnectOptions, MongooseError, Connection } from 'mongoose';
 
 export interface MongooseModuleOptions extends ConnectOptions {
   uri?: string;
@@ -9,6 +9,7 @@ export interface MongooseModuleOptions extends ConnectOptions {
   connectionFactory?: (connection: any, name: string) => any;
   connectionErrorFactory?: (error: MongooseError) => MongooseError;
   lazyConnection?: boolean;
+  onConnectionCreate?: (connection: Connection) => void;
 }
 
 export interface MongooseOptionsFactory {
