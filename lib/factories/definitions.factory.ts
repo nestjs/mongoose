@@ -4,7 +4,15 @@ import * as mongoose from 'mongoose';
 import { PropOptions } from '../decorators';
 import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 
-const BUILT_IN_TYPES: Function[] = [Boolean, Number, String, Map, Date, Buffer];
+const BUILT_IN_TYPES: Function[] = [
+  Boolean,
+  Number,
+  String,
+  Map,
+  Date,
+  Buffer,
+  BigInt,
+];
 
 export class DefinitionsFactory {
   static createForClass(target: Type<unknown>): mongoose.SchemaDefinition {
