@@ -203,10 +203,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       return connection;
     }
 
-    const mongooseOnConnectionCreate = onConnectionCreate || (() => {});
-    if (mongooseOnConnectionCreate) {
-      mongooseOnConnectionCreate(connection);
-    }
+    onConnectionCreate?.(connection);
 
     return connection.asPromise();
   }
