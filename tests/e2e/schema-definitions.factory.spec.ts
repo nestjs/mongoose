@@ -79,6 +79,9 @@ class ExampleClass {
 
   @Prop()
   array: Array<any>;
+
+  @Prop()
+  bigint: bigint;
 }
 
 describe('DefinitionsFactory', () => {
@@ -103,6 +106,7 @@ describe('DefinitionsFactory', () => {
       'customObject',
       'any',
       'array',
+      'bigint',
     ]);
     expect(definition).toEqual({
       objectId: {
@@ -130,6 +134,7 @@ describe('DefinitionsFactory', () => {
           },
         },
       ],
+      bigint: { type: BigInt },
       buffer: { type: mongoose.Schema.Types.Buffer },
       decimal: { type: mongoose.Schema.Types.Decimal128 },
       child: {
