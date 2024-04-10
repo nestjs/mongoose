@@ -18,6 +18,7 @@ import {
   MongooseModuleFactoryOptions,
   MongooseModuleOptions,
   MongooseOptionsFactory,
+  MongooseFactoryOptions,
 } from './interfaces/mongoose-options.interface';
 import {
   MONGOOSE_CONNECTION_NAME,
@@ -43,7 +44,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       connectionFactory,
       connectionErrorFactory,
       lazyConnection,
-      onConnectionCreate,
+      factoryOptions,
       ...mongooseOptions
     } = options;
 
@@ -60,6 +61,10 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       useValue: mongooseConnectionName,
     };
 
+    // TODO: Remove when "lazyConnection" option is removed (post deprecation)
+    const mongooseFactoryOptions: MongooseFactoryOptions =
+      factoryOptions || lazyConnection ? { lazyConnection } : {};
+
     const connectionProvider = {
       provide: mongooseConnectionName,
       useFactory: async (): Promise<any> =>
@@ -69,8 +74,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
               await this.createMongooseConnection(
                 uri,
                 mongooseOptions,
-                lazyConnection,
-                onConnectionCreate,
+                mongooseFactoryOptions,
               ),
               mongooseConnectionName,
             ),
@@ -109,7 +113,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           connectionFactory,
           connectionErrorFactory,
           lazyConnection,
-          onConnectionCreate,
+          factoryOptions,
           ...mongooseOptions
         } = mongooseModuleOptions;
 
@@ -119,14 +123,17 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         const mongooseConnectionError =
           connectionErrorFactory || ((error) => error);
 
+        // TODO: Remove when "lazyConnection" option is removed (post deprecation)
+        const mongooseFactoryOptions: MongooseFactoryOptions =
+          factoryOptions || lazyConnection ? { lazyConnection } : {};
+
         return await lastValueFrom(
           defer(async () =>
             mongooseConnectionFactory(
               await this.createMongooseConnection(
                 uri as string,
                 mongooseOptions,
-                lazyConnection,
-                onConnectionCreate,
+                mongooseFactoryOptions,
               ),
               mongooseConnectionName,
             ),
@@ -194,16 +201,15 @@ export class MongooseCoreModule implements OnApplicationShutdown {
   private static async createMongooseConnection(
     uri: string,
     mongooseOptions: ConnectOptions,
-    lazyConnection?: boolean,
-    onConnectionCreate?: MongooseModuleOptions['onConnectionCreate'],
+    factoryOptions?: MongooseFactoryOptions,
   ): Promise<Connection> {
     const connection = mongoose.createConnection(uri, mongooseOptions);
 
-    if (lazyConnection) {
+    if (factoryOptions?.lazyConnection) {
       return connection;
     }
 
-    onConnectionCreate?.(connection);
+    factoryOptions?.onConnectionCreate?.(connection);
 
     return connection.asPromise();
   }
