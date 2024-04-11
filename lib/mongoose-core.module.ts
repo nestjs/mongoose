@@ -66,12 +66,10 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         await lastValueFrom(
           defer(async () =>
             mongooseConnectionFactory(
-              await this.createMongooseConnection(
-                uri,
-                mongooseOptions,
+              await this.createMongooseConnection(uri, mongooseOptions, {
                 lazyConnection,
                 onConnectionCreate,
-              ),
+              }),
               mongooseConnectionName,
             ),
           ).pipe(
@@ -125,8 +123,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
               await this.createMongooseConnection(
                 uri as string,
                 mongooseOptions,
-                lazyConnection,
-                onConnectionCreate,
+                { lazyConnection, onConnectionCreate },
               ),
               mongooseConnectionName,
             ),
@@ -194,16 +191,18 @@ export class MongooseCoreModule implements OnApplicationShutdown {
   private static async createMongooseConnection(
     uri: string,
     mongooseOptions: ConnectOptions,
-    lazyConnection?: boolean,
-    onConnectionCreate?: MongooseModuleOptions['onConnectionCreate'],
+    factoryOptions: {
+      lazyConnection?: boolean;
+      onConnectionCreate?: MongooseModuleOptions['onConnectionCreate'];
+    },
   ): Promise<Connection> {
     const connection = mongoose.createConnection(uri, mongooseOptions);
 
-    if (lazyConnection) {
+    if (factoryOptions?.lazyConnection) {
       return connection;
     }
 
-    onConnectionCreate?.(connection);
+    factoryOptions?.onConnectionCreate?.(connection);
 
     return connection.asPromise();
   }
