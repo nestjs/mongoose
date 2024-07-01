@@ -48,7 +48,7 @@
     "supertest": "7.0.0",
     "ts-jest": "29.1.5",
     "ts-node": "10.9.2",
-    "typescript": "5.5.2"
+    "typescript": "5.5.3"
   },
   "peerDependencies": {
     "@nestjs/common": "^8.0.0 || ^9.0.0 || ^10.0.0",
