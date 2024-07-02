@@ -29,11 +29,12 @@ export class DefinitionsFactory {
         break;
       }
       const schemaMetadata = TypeMetadataStorage.getSchemaMetadataByTarget(
-        parent as Type<unknown>,
+        target as Type<unknown>,
       );
       if (!schemaMetadata) {
-        parent = Object.getPrototypeOf(parent);
-        continue;
+        throw new Error(
+          `Target class "${target}" passed in to the "DefinitionsFactory#createForClass()" method isn't annotated with the "@Schema" decorator.`,
+        );
       }
       schemaMetadata.properties?.forEach((item) => {
         const options = this.inspectTypeDefinition(item.options as any);
