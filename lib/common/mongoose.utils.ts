@@ -27,12 +27,6 @@ export function handleRetry(
       retryWhen((e) =>
         e.pipe(
           scan((errorCount, error) => {
-            logger.error(
-              `Unable to connect to the database. Retrying (${
-                errorCount + 1
-              })...`,
-              '',
-            );
             const verboseMessage = verboseRetryLog
               ? ` Message: ${error.message}.`
               : '';
