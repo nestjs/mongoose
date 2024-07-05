@@ -44,6 +44,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       connectionErrorFactory,
       lazyConnection,
       onConnectionCreate,
+      verboseRetryLog,
       ...mongooseOptions
     } = options;
 
@@ -73,7 +74,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
               mongooseConnectionName,
             ),
           ).pipe(
-            handleRetry(retryAttempts, retryDelay, options.verboseRetryLog),
+            handleRetry(retryAttempts, retryDelay, verboseRetryLog),
             catchError((error) => {
               throw mongooseConnectionError(error);
             }),
@@ -108,6 +109,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           connectionErrorFactory,
           lazyConnection,
           onConnectionCreate,
+          verboseRetryLog,
           ...mongooseOptions
         } = mongooseModuleOptions;
 
@@ -128,11 +130,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
               mongooseConnectionName,
             ),
           ).pipe(
-            handleRetry(
-              retryAttempts,
-              retryDelay,
-              mongooseOptions.verboseRetryLog,
-            ),
+            handleRetry(retryAttempts, retryDelay, verboseRetryLog),
             catchError((error) => {
               throw mongooseConnectionError(error);
             }),
