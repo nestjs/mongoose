@@ -19,6 +19,7 @@ export function getConnectionToken(name?: string) {
 export function handleRetry(
   retryAttempts = 9,
   retryDelay = 3000,
+  verboseRetryLog = false,
 ): <T>(source: Observable<T>) => Observable<T> {
   const logger = new Logger('MongooseModule');
   return <T>(source: Observable<T>) =>
@@ -31,6 +32,16 @@ export function handleRetry(
                 errorCount + 1
               })...`,
               '',
+            );
+            const verboseMessage = verboseRetryLog
+              ? ` Message: ${error.message}.`
+              : '';
+
+            logger.error(
+              `Unable to connect to the database.${verboseMessage} Retrying (${
+                errorCount + 1
+              })...`,
+              error.stack,
             );
             if (errorCount + 1 >= retryAttempts) {
               throw error;

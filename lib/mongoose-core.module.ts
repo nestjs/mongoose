@@ -73,7 +73,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
               mongooseConnectionName,
             ),
           ).pipe(
-            handleRetry(retryAttempts, retryDelay),
+            handleRetry(retryAttempts, retryDelay, options.verboseRetryLog),
             catchError((error) => {
               throw mongooseConnectionError(error);
             }),
@@ -128,7 +128,11 @@ export class MongooseCoreModule implements OnApplicationShutdown {
               mongooseConnectionName,
             ),
           ).pipe(
-            handleRetry(retryAttempts, retryDelay),
+            handleRetry(
+              retryAttempts,
+              retryDelay,
+              mongooseOptions.verboseRetryLog,
+            ),
             catchError((error) => {
               throw mongooseConnectionError(error);
             }),

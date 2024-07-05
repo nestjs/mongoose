@@ -1,5 +1,5 @@
 import { ModuleMetadata, Type } from '@nestjs/common';
-import { ConnectOptions, MongooseError, Connection } from 'mongoose';
+import { ConnectOptions, Connection, MongooseError } from 'mongoose';
 
 export interface MongooseModuleOptions extends ConnectOptions {
   uri?: string;
@@ -10,6 +10,10 @@ export interface MongooseModuleOptions extends ConnectOptions {
   connectionErrorFactory?: (error: MongooseError) => MongooseError;
   lazyConnection?: boolean;
   onConnectionCreate?: (connection: Connection) => void;
+  /**
+   * If `true`, will show verbose error messages on each connection retry.
+   */
+  verboseRetryLog?: boolean;
 }
 
 export interface MongooseOptionsFactory {
