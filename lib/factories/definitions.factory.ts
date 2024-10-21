@@ -83,7 +83,10 @@ export class DefinitionsFactory {
         ) as mongoose.Schema;
       }
       return schemaDefinition;
-    } else if (typeof optionsOrType.type === 'function' || Array.isArray(optionsOrType.type)) {
+    } else if (
+      typeof optionsOrType.type === 'function' ||
+      Array.isArray(optionsOrType.type)
+    ) {
       optionsOrType.type = this.inspectTypeDefinition(optionsOrType.type);
       return optionsOrType;
     } else if (Array.isArray(optionsOrType)) {
@@ -103,7 +106,10 @@ export class DefinitionsFactory {
     if (typeof optionsOrType?.ref === 'function') {
       try {
         const result = (optionsOrType.ref as Function)();
-        optionsOrType.ref = result?.name ?? result;
+        if (typeof result?.name === 'string') {
+          optionsOrType.ref = result.name;
+        }
+        optionsOrType.ref = optionsOrType.ref;
       } catch (err) {
         if (err instanceof TypeError) {
           const refClassName = (optionsOrType.ref as Function)?.name;
