@@ -1,7 +1,7 @@
-import { Logger } from "@nestjs/common";
-import { Observable } from "rxjs";
-import { delay, retryWhen, scan } from "rxjs/operators";
-import { DEFAULT_DB_CONNECTION } from "../mongoose.constants";
+import { Logger } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { delay, retryWhen, scan } from 'rxjs/operators';
+import { DEFAULT_DB_CONNECTION } from '../mongoose.constants';
 
 export function getModelToken(model: string, connectionName?: string) {
   if (connectionName === undefined) {
@@ -29,17 +29,16 @@ export function handleRetry(
           scan((errorCount, error) => {
             const verboseMessage = verboseRetryLog
               ? ` Message: ${error.message}.`
-              : "";
-            const retryMessage = retryAttempts > 0
-              ? ` Retrying (${errorCount + 1})...`
-              : "";
+              : '';
+            const retryMessage =
+              retryAttempts > 0 ? ` Retrying (${errorCount + 1})...` : '';
 
             logger.error(
               [
-                "Unable to connect to the database.",
+                'Unable to connect to the database.',
                 verboseMessage,
                 retryMessage,
-              ].join(""),
+              ].join(''),
               error.stack,
             );
             if (errorCount + 1 >= retryAttempts) {

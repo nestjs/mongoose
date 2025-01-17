@@ -211,6 +211,8 @@ export class MongooseCoreModule implements OnApplicationShutdown {
 
   async onApplicationShutdown() {
     const connection = this.moduleRef.get<any>(this.connectionName);
-    connection && (await connection.close());
+    if (connection) {
+      await connection.close();
+    }
   }
 }
