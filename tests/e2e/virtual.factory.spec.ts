@@ -59,7 +59,7 @@ describe('VirtualsFactory', () => {
   };
 
   beforeEach(() => {
-    (schemaMock.virtual as any) = jest.fn(() => ({
+    schemaMock.virtual = jest.fn(() => ({
       get: setVirtualGetterFunctionMock,
       set: setVirtualSetterFunctionMock,
     }));
@@ -70,23 +70,23 @@ describe('VirtualsFactory', () => {
   });
 
   describe('Schema virtual definition', () => {
-    it('should not define virtuals if there is no stored virtual definition', () => {
+    it('should not define any virtuals if no virtual definitions are stored', () => {
       TypeMetadataStorage['virtuals'] = [];
 
       VirtualsFactory.inspect(targetConstructorMock, schemaMock);
 
-      expect(schemaMock.virtual).toHaveBeenCalledTimes(0);
+      expect(schemaMock.virtual).not.toHaveBeenCalled();
     });
 
-    it('should not define virtuals if there is no stored virtual definition linked to schema model', () => {
+    it('should not define virtuals if there are no stored virtual definitions linked to the schema model', () => {
       TypeMetadataStorage['virtuals'] = [virtualMetadataNotLikedToModelMock];
 
       VirtualsFactory.inspect(targetConstructorMock, schemaMock);
 
-      expect(schemaMock.virtual).toHaveBeenCalledTimes(0);
+      expect(schemaMock.virtual).not.toHaveBeenCalled();
     });
 
-    it('should defines virtual for each stored virtualMetadata linked to schema model', () => {
+    it('should define virtuals for each stored virtual metadata linked to the schema model', () => {
       TypeMetadataStorage['virtuals'] = [
         virtualMetadataWithOnlyRequiredAttributesMock,
         virtualMetadataNotLikedToModelMock,
@@ -105,19 +105,19 @@ describe('VirtualsFactory', () => {
     });
   });
 
-  describe('Schema virtual getter/setter definition', () => {
-    it('should not call the getter/setter definition method if no getter/setter defined in the stored virtual metadata linked to the schema model', () => {
+  describe('Schema virtual getter/setter definitions', () => {
+    it('should not call the getter/setter methods if no getter/setter is defined in the stored virtual metadata linked to the schema model', () => {
       TypeMetadataStorage['virtuals'] = [
         virtualMetadataWithOptionsMock,
       ] as VirtualMetadataInterface[];
 
       VirtualsFactory.inspect(targetConstructorMock, schemaMock);
 
-      expect(setVirtualGetterFunctionMock).toHaveBeenCalledTimes(0);
-      expect(setVirtualSetterFunctionMock).toHaveBeenCalledTimes(0);
+      expect(setVirtualGetterFunctionMock).not.toHaveBeenCalled();
+      expect(setVirtualSetterFunctionMock).not.toHaveBeenCalled();
     });
 
-    it('should call the getter/setter definition method for each stored virtuals metadata with defined getter/setter linked to the schema model', () => {
+    it('should invoke the getter/setter methods for each stored virtual metadata with defined getter/setter linked to the schema model', () => {
       TypeMetadataStorage['virtuals'] = [
         virtualMetadataWithOptionsMock,
         virtualMetadataWithGetterMock,
