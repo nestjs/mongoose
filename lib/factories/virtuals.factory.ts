@@ -1,4 +1,5 @@
 import { Type } from '@nestjs/common';
+import { isUndefined } from '@nestjs/common/utils/shared.utils';
 import * as mongoose from 'mongoose';
 import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 
@@ -7,18 +8,27 @@ export class VirtualsFactory {
     target: Type<TClass>,
     schema: mongoose.Schema<TClass>,
   ): void {
-    const virtuals = TypeMetadataStorage.getVirtualsMetadataByTarget(target);
+    let parent = target;
 
-    virtuals.forEach(({ options, name, getter, setter }) => {
-      const virtual = schema.virtual(name, options);
-
-      if (getter) {
-        virtual.get(getter);
+    while (!isUndefined(parent.prototype)) {
+      if (parent === Function.prototype) {
+        break;
       }
+      const virtuals = TypeMetadataStorage.getVirtualsMetadataByTarget(parent);
 
-      if (setter) {
-        virtual.set(setter);
-      }
-    });
+      virtuals.forEach(({ options, name, getter, setter }) => {
+        const virtual = schema.virtual(name, options);
+
+        if (getter) {
+          virtual.get(getter);
+        }
+
+        if (setter) {
+          virtual.set(setter);
+        }
+      });
+
+      parent = Object.getPrototypeOf(parent);
+    }
   }
 }

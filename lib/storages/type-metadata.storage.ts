@@ -26,6 +26,10 @@ export class TypeMetadataStorageHost {
     return this.schemas.find((item) => item.target === target);
   }
 
+  getVirtualsMetadataByTarget<TClass>(targetFilter: Type<TClass>) {
+    return this.virtuals.filter(({ target }) => target === targetFilter);
+  }
+
   private compileClassMetadata(metadata: SchemaMetadata) {
     const belongsToClass = isTargetEqual.bind(undefined, metadata);
 
@@ -38,10 +42,6 @@ export class TypeMetadataStorageHost {
     belongsToClass: (item: PropertyMetadata) => boolean,
   ) {
     return this.properties.filter(belongsToClass);
-  }
-
-  getVirtualsMetadataByTarget<TClass>(targetFilter: Type<TClass>) {
-    return this.virtuals.filter(({ target }) => target === targetFilter);
   }
 }
 

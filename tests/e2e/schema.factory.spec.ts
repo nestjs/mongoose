@@ -1,4 +1,3 @@
-import { VirtualTypeOptions } from 'mongoose';
 import { Prop, Schema, SchemaFactory, Virtual } from '../../lib';
 
 @Schema({ validateBeforeSave: false, _id: true, autoIndex: true })
@@ -70,7 +69,7 @@ describe('SchemaFactory', () => {
     );
   });
 
-  it('should define for schema a virtuals with options', () => {
+  it('should add virtuals with corresponding options', () => {
     const {
       virtuals: { virtualPropsWithOptions },
     } = SchemaFactory.createForClass(ExampleClass) as any;
@@ -89,7 +88,7 @@ describe('SchemaFactory', () => {
     );
   });
 
-  it('should define for schema a virtual with getter/setter functions', () => {
+  it('should add virtuals with corresponding getter and setter functions', () => {
     const {
       virtuals: { virtualPropsWithGetterSetterFunctions },
     } = SchemaFactory.createForClass(ExampleClass) as any;
@@ -102,5 +101,14 @@ describe('SchemaFactory', () => {
         options: {},
       }),
     );
+  });
+
+  it('should inherit virtuals from parent classes', () => {
+    @Schema()
+    class ChildClass extends ExampleClass {}
+    const { virtuals } = SchemaFactory.createForClass(ChildClass) as any;
+
+    expect(virtuals.virtualPropsWithOptions).toBeDefined();
+    expect(virtuals.virtualPropsWithGetterSetterFunctions).toBeDefined();
   });
 });
