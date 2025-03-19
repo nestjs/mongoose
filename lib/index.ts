@@ -4,5 +4,5 @@ export * from './errors';
 export * from './factories';
 export * from './interfaces';
 export * from './mongoose.module';
-export * from './utils';
 export * from './pipes';
+export * from './utils';
