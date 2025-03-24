@@ -28,6 +28,10 @@ class ExampleClass {
   @Prop()
   array: Array<any>;
 
+  // see https://github.com/nestjs/mongoose/issues/839
+  @Prop({ type: [ChildClass], required: true })
+  anotherArray: ChildClass[];
+
   @Virtual({
     options: {
       localField: 'array',
