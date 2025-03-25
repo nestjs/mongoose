@@ -85,7 +85,8 @@ export class DefinitionsFactory {
       return schemaDefinition;
     } else if (
       typeof optionsOrType.type === 'function' ||
-      Array.isArray(optionsOrType.type)
+      (Array.isArray(optionsOrType.type) &&
+        typeof optionsOrType.type[0] === 'function')
     ) {
       optionsOrType.type = this.inspectTypeDefinition(optionsOrType.type);
       return optionsOrType;
