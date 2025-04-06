@@ -3,6 +3,9 @@ import { isUndefined } from '@nestjs/common/utils/shared.utils';
 import * as mongoose from 'mongoose';
 import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 
+/**
+ * @publicApi
+ */
 export class VirtualsFactory {
   static inspect<TClass = any>(
     target: Type<TClass>,

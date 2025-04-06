@@ -3,6 +3,9 @@ import { Observable } from 'rxjs';
 import { delay, retryWhen, scan } from 'rxjs/operators';
 import { DEFAULT_DB_CONNECTION } from '../mongoose.constants';
 
+/**
+ * @publicApi
+ */
 export function getModelToken(model: string, connectionName?: string) {
   if (connectionName === undefined) {
     return `${model}Model`;
@@ -10,6 +13,9 @@ export function getModelToken(model: string, connectionName?: string) {
   return `${getConnectionToken(connectionName)}/${model}Model`;
 }
 
+/**
+ * @publicApi
+ */
 export function getConnectionToken(name?: string) {
   return name && name !== DEFAULT_DB_CONNECTION
     ? `${name}Connection`

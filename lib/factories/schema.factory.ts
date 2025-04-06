@@ -5,6 +5,9 @@ import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 import { DefinitionsFactory } from './definitions.factory';
 import { VirtualsFactory } from './virtuals.factory';
 
+/**
+ * @publicApi
+ */
 export class SchemaFactory {
   static createForClass<TClass = any>(
     target: Type<TClass>,

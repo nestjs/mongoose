@@ -10,6 +10,9 @@ import {
   createMongooseProviders,
 } from './mongoose.providers';
 
+/**
+ * @publicApi
+ */
 @Module({})
 export class MongooseModule {
   static forRoot(
