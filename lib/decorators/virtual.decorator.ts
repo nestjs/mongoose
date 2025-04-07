@@ -3,6 +3,8 @@ import { TypeMetadataStorage } from '../storages/type-metadata.storage';
 
 /**
  * Interface defining the options that can be passed to the `@Virtual()` decorator.
+ * 
+ * @publicApi
  */
 export interface VirtualOptions {
   /**
@@ -26,6 +28,8 @@ export interface VirtualOptions {
 
 /**
  * The Virtual decorator marks a class property as a Mongoose virtual.
+ * 
+ * @publicApi
  */
 export function Virtual(options?: VirtualOptions): PropertyDecorator {
   return (target: object, propertyKey: string | symbol) => {
