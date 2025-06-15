@@ -39,7 +39,7 @@
     "globals": "16.2.0",
     "husky": "9.1.7",
     "jest": "30.0.0",
-    "lint-staged": "16.1.1",
+    "lint-staged": "16.1.2",
     "mongoose": "8.15.2",
     "prettier": "3.5.3",
     "reflect-metadata": "0.2.2",
