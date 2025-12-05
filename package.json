@@ -40,7 +40,7 @@
     "husky": "9.1.7",
     "jest": "30.2.0",
     "lint-staged": "16.2.7",
-    "mongoose": "8.19.4",
+    "mongoose": "9.0.1",
     "prettier": "3.7.4",
     "reflect-metadata": "0.2.2",
     "release-it": "19.0.6",
@@ -54,7 +54,7 @@
   "peerDependencies": {
     "@nestjs/common": "^10.0.0 || ^11.0.0",
     "@nestjs/core": "^10.0.0 || ^11.0.0",
-    "mongoose": "^7.0.0 || ^8.0.0",
+    "mongoose": "^7.0.0 || ^8.0.0 || ^9.0.0",
     "rxjs": "^7.0.0"
   },
   "lint-staged": {
