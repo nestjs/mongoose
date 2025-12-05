@@ -58,7 +58,7 @@ describe('Mongoose', () => {
       ...createDto,
       name: 'Nest',
       age: 5,
-      kitten: [kitten._id as string],
+      kitten: [kitten._id.toString()],
     };
 
     const parent = await new Promise<string>((resolve) => {

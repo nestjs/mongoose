@@ -2,7 +2,7 @@ import { Document, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '../../../../lib';
 
 @Schema()
-export class Cat extends Document {
+export class Cat extends Document<Types.ObjectId> {
   @Prop()
   name: string;
 
