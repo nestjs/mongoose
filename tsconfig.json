@@ -7,10 +7,13 @@
     "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "ES2021",
+    "target": "ES2022",
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "types": ["vitest/globals"]
   }
 }

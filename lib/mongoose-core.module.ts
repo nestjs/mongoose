@@ -34,7 +34,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
 
   static forRoot(
     uri: string,
-    options: MongooseModuleOptions = {},
+    options: MongooseModuleOptions = {} as MongooseModuleOptions,
   ): DynamicModule {
     const {
       retryAttempts,

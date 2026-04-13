@@ -1,7 +1,7 @@
 import { DynamicModule, HttpStatus, INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'http';
-import * as request from 'supertest';
+import request from 'supertest';
 import { MongooseModule } from '../../lib';
 import { EventModule } from '../src/event/event.module';
 import {

@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./lib"
+    "rootDir": "./lib",
+    "types": ["node"]
   },
   "include": ["lib/**/*"],
   "exclude": ["node_modules", "tests", "dist", "**/*spec.ts"]

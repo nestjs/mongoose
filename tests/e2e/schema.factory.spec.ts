@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { Prop, Schema, SchemaFactory, Virtual } from '../../lib';
 
 @Schema({ validateBeforeSave: false, _id: true, autoIndex: true })
@@ -9,8 +10,8 @@ class ChildClass {
   name: string;
 }
 
-const getterFunctionMock = jest.fn();
-const setterFunctionMock = jest.fn();
+const getterFunctionMock = vi.fn();
+const setterFunctionMock = vi.fn();
 
 @Schema({
   validateBeforeSave: false,

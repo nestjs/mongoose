@@ -1,18 +1,19 @@
+import { vi } from 'vitest';
 import { VirtualsFactory } from '../../lib';
 import { VirtualMetadataInterface } from '../../lib/metadata/virtual-metadata.interface';
 import { TypeMetadataStorage } from '../../lib/storages/type-metadata.storage';
 
 describe('VirtualsFactory', () => {
-  const setVirtualSetterFunctionMock = jest.fn();
-  const setVirtualGetterFunctionMock = jest.fn();
+  const setVirtualSetterFunctionMock = vi.fn();
+  const setVirtualGetterFunctionMock = vi.fn();
   const schemaMock = {
-    virtual: jest.fn(() => ({
+    virtual: vi.fn(() => ({
       get: setVirtualGetterFunctionMock,
       set: setVirtualSetterFunctionMock,
     })),
   } as any;
 
-  const targetConstructorMock = jest.fn();
+  const targetConstructorMock = vi.fn();
 
   const virtualOptionsMock = {
     ref: 'collectionNameMock',
@@ -26,7 +27,7 @@ describe('VirtualsFactory', () => {
   };
 
   const virtualMetadataNotLikedToModelMock = {
-    target: jest.fn(),
+    target: vi.fn(),
     name: 'attribute1Mock',
   };
 
@@ -40,33 +41,33 @@ describe('VirtualsFactory', () => {
     target: targetConstructorMock,
     name: 'virtualMetadataWithGetterMock',
     options: virtualOptionsMock,
-    getter: jest.fn(),
+    getter: vi.fn(),
   };
 
   const virtualMetadataWithSetterMock = {
     target: targetConstructorMock,
     name: 'virtualMetadataWithSetterMock',
     options: virtualOptionsMock,
-    setter: jest.fn(),
+    setter: vi.fn(),
   };
 
   const virtualMetadataWithGetterSetterMock = {
     target: targetConstructorMock,
     name: 'virtualMetadataWithGetterSetterMock',
     options: virtualOptionsMock,
-    getter: jest.fn(),
-    setter: jest.fn(),
+    getter: vi.fn(),
+    setter: vi.fn(),
   };
 
   beforeEach(() => {
-    schemaMock.virtual = jest.fn(() => ({
+    schemaMock.virtual = vi.fn(() => ({
       get: setVirtualGetterFunctionMock,
       set: setVirtualSetterFunctionMock,
     }));
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   describe('Schema virtual definition', () => {

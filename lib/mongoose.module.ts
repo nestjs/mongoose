@@ -17,7 +17,7 @@ import {
 export class MongooseModule {
   static forRoot(
     uri: string,
-    options: MongooseModuleOptions = {},
+    options: MongooseModuleOptions = {} as MongooseModuleOptions,
   ): DynamicModule {
     return {
       module: MongooseModule,

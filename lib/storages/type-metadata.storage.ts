@@ -45,7 +45,7 @@ export class TypeMetadataStorageHost {
   }
 }
 
-const globalRef = global as any;
+const globalRef = globalThis as any;
 export const TypeMetadataStorage: TypeMetadataStorageHost =
   globalRef.MongoTypeMetadataStorage ||
   (globalRef.MongoTypeMetadataStorage = new TypeMetadataStorageHost());

@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'http';
-import * as request from 'supertest';
+import request from 'supertest';
 import { LazyAppModule } from '../src/lazy-app.module';
 
 describe('Mongoose lazy connection', () => {
@@ -18,18 +18,15 @@ describe('Mongoose lazy connection', () => {
     await app.init();
   });
 
-  it(`should return created document`, (done) => {
+  it(`should return created document`, async () => {
     const createDto = { name: 'Nest', breed: 'Maine coon', age: 5 };
-    request(server)
+    const { body } = await request(server)
       .post('/cats')
       .send(createDto)
-      .expect(201)
-      .end((err, { body }) => {
-        expect(body.name).toEqual(createDto.name);
-        expect(body.age).toEqual(createDto.age);
-        expect(body.breed).toEqual(createDto.breed);
-        done();
-      });
+      .expect(201);
+    expect(body.name).toEqual(createDto.name);
+    expect(body.age).toEqual(createDto.age);
+    expect(body.breed).toEqual(createDto.breed);
   });
 
   afterEach(async () => {
