@@ -41,7 +41,7 @@
     "supertest": "7.2.2",
     "typescript": "6.0.3",
     "vite": "8.0.9",
-    "vitest": "4.1.4"
+    "vitest": "4.1.5"
   },
   "peerDependencies": {
     "@nestjs/common": "^10.0.0 || ^11.0.0",
