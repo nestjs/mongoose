@@ -1,7 +1,9 @@
 import { vi } from 'vitest';
-import { VirtualsFactory } from '../../lib';
-import { VirtualMetadataInterface } from '../../lib/metadata/virtual-metadata.interface';
-import { TypeMetadataStorage } from '../../lib/storages/type-metadata.storage';
+import {
+  TypeMetadataStorage,
+  VirtualMetadataInterface,
+  VirtualsFactory,
+} from '../../lib/index.js';
 
 describe('VirtualsFactory', () => {
   const setVirtualSetterFunctionMock = vi.fn();

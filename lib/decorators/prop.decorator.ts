@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
-import { CannotDetermineTypeError } from '../errors';
-import { RAW_OBJECT_DEFINITION } from '../mongoose.constants';
-import { TypeMetadataStorage } from '../storages/type-metadata.storage';
+import { CannotDetermineTypeError } from '../errors/index.js';
+import { RAW_OBJECT_DEFINITION } from '../mongoose.constants.js';
+import { TypeMetadataStorage } from '../storages/type-metadata.storage.js';
 
 const TYPE_METADATA_KEY = 'design:type';
 /**

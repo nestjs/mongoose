@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { TypeMetadataStorage } from '../storages/type-metadata.storage';
+import { TypeMetadataStorage } from '../storages/type-metadata.storage.js';
 
 /**
  * Interface defining schema options that can be passed to `@Schema()` decorator.

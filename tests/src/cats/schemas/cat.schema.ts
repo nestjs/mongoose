@@ -1,5 +1,5 @@
 import { Document, Types } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '../../../../lib';
+import { Prop, Schema, SchemaFactory } from '../../../../lib/index.js';
 
 @Schema()
 export class Cat extends Document<Types.ObjectId> {

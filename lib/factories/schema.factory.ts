@@ -1,9 +1,9 @@
 import { Type } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import { SchemaDefinition, SchemaDefinitionType } from 'mongoose';
-import { TypeMetadataStorage } from '../storages/type-metadata.storage';
-import { DefinitionsFactory } from './definitions.factory';
-import { VirtualsFactory } from './virtuals.factory';
+import { TypeMetadataStorage } from '../storages/type-metadata.storage.js';
+import { DefinitionsFactory } from './definitions.factory.js';
+import { VirtualsFactory } from './virtuals.factory.js';
 
 /**
  * @publicApi

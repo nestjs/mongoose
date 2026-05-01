@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { delay, retryWhen, scan } from 'rxjs/operators';
-import { DEFAULT_DB_CONNECTION } from '../mongoose.constants';
+import { DEFAULT_DB_CONNECTION } from '../mongoose.constants.js';
 
 /**
  * @publicApi

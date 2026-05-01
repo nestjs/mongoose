@@ -2,9 +2,9 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'http';
 import request from 'supertest';
-import { AppModule } from '../src/app.module';
-import { CreateCatDto } from '../src/cats/dto/create-cat.dto';
-import { Cat } from '../src/cats/schemas/cat.schema';
+import { AppModule } from '../src/app.module.js';
+import { CreateCatDto } from '../src/cats/dto/create-cat.dto.js';
+import { Cat } from '../src/cats/schemas/cat.schema.js';
 
 describe('Mongoose', () => {
   let server: Server;

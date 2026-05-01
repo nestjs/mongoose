@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { EventService } from './event.service';
-import { EventController } from './event.controller';
+import { EventService } from './event.service.js';
+import { EventController } from './event.controller.js';
 
 @Module({})
 export class EventModule {
