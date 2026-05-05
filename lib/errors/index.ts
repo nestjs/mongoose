@@ -1,1 +1,1 @@
-export * from './cannot-determine-type.error';
+export * from './cannot-determine-type.error.js';

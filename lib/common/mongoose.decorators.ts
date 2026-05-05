@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { getConnectionToken, getModelToken } from './mongoose.utils';
+import { getConnectionToken, getModelToken } from './mongoose.utils.js';
 
 /**
  * @publicApi

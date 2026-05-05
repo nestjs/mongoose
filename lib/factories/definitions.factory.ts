@@ -1,8 +1,7 @@
 import { Type } from '@nestjs/common';
-import { isUndefined } from '@nestjs/common/utils/shared.utils';
 import * as mongoose from 'mongoose';
-import { PropOptions } from '../decorators';
-import { TypeMetadataStorage } from '../storages/type-metadata.storage';
+import { PropOptions } from '../decorators/index.js';
+import { TypeMetadataStorage } from '../storages/type-metadata.storage.js';
 
 const BUILT_IN_TYPES: Function[] = [
   Boolean,
@@ -13,6 +12,8 @@ const BUILT_IN_TYPES: Function[] = [
   Buffer,
   BigInt,
 ];
+
+const isUndefined = (value: unknown): value is undefined => value === undefined;
 
 export class DefinitionsFactory {
   static createForClass(target: Type<unknown>): mongoose.SchemaDefinition {
