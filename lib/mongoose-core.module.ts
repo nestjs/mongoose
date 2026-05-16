@@ -12,17 +12,17 @@ import * as mongoose from 'mongoose';
 import { ConnectOptions, Connection } from 'mongoose';
 import { defer, lastValueFrom } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { getConnectionToken, handleRetry } from './common/mongoose.utils';
+import { getConnectionToken, handleRetry } from './common/mongoose.utils.js';
 import {
   MongooseModuleAsyncOptions,
   MongooseModuleFactoryOptions,
   MongooseModuleOptions,
   MongooseOptionsFactory,
-} from './interfaces/mongoose-options.interface';
+} from './interfaces/mongoose-options.interface.js';
 import {
   MONGOOSE_CONNECTION_NAME,
   MONGOOSE_MODULE_OPTIONS,
-} from './mongoose.constants';
+} from './mongoose.constants.js';
 
 @Global()
 @Module({})
