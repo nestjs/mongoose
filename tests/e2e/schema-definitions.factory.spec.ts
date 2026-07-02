@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
-import { DefinitionsFactory, Prop, raw, Schema } from '../../lib';
-import { CannotDetermineTypeError } from '../../lib/errors';
+import {
+  CannotDetermineTypeError,
+  DefinitionsFactory,
+  Prop,
+  raw,
+  Schema,
+} from '../../lib/index.js';
 
 @Schema()
 class RefClass {

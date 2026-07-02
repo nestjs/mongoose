@@ -1,14 +1,14 @@
 import { DynamicModule, flatten, Module } from '@nestjs/common';
-import { AsyncModelFactory, ModelDefinition } from './interfaces';
+import { AsyncModelFactory, ModelDefinition } from './interfaces/index.js';
 import {
   MongooseModuleAsyncOptions,
   MongooseModuleOptions,
-} from './interfaces/mongoose-options.interface';
-import { MongooseCoreModule } from './mongoose-core.module';
+} from './interfaces/mongoose-options.interface.js';
+import { MongooseCoreModule } from './mongoose-core.module.js';
 import {
   createMongooseAsyncProviders,
   createMongooseProviders,
-} from './mongoose.providers';
+} from './mongoose.providers.js';
 
 /**
  * @publicApi
