@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '../../../../lib';
-import { ClickLinkEvent } from './click-link-event.schema';
-import { SignUpEvent } from './sign-up-event.schema';
+import { Prop, Schema, SchemaFactory } from '../../../../lib/index.js';
+import { ClickLinkEvent } from './click-link-event.schema.js';
+import { SignUpEvent } from './sign-up-event.schema.js';
 
 @Schema({ discriminatorKey: 'kind' })
 export class Event {

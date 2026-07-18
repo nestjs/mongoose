@@ -1,7 +1,7 @@
 import { Provider } from '@nestjs/common';
 import { Connection, Document, Model } from 'mongoose';
-import { getConnectionToken, getModelToken } from './common/mongoose.utils';
-import { AsyncModelFactory, ModelDefinition } from './interfaces';
+import { getConnectionToken, getModelToken } from './common/mongoose.utils.js';
+import { AsyncModelFactory, ModelDefinition } from './interfaces/index.js';
 
 export function createMongooseProviders(
   connectionName?: string,
