@@ -33,7 +33,7 @@
     "husky": "9.1.7",
     "lint-staged": "17.1.0",
     "mongoose": "9.8.0",
-    "oxlint": "1.74.0",
+    "oxlint": "1.75.0",
     "prettier": "3.9.6",
     "reflect-metadata": "0.2.2",
     "release-it": "20.2.1",
