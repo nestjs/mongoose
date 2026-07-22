@@ -31,7 +31,7 @@
     "@nestjs/testing": "11.1.28",
     "@types/node": "24.13.3",
     "husky": "9.1.7",
-    "lint-staged": "17.1.0",
+    "lint-staged": "17.1.1",
     "mongoose": "9.8.0",
     "oxlint": "1.75.0",
     "prettier": "3.9.6",
