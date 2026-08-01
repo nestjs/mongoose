@@ -1,4 +1,4 @@
-import { PropOptions } from '../decorators/prop.decorator';
+import { PropOptions } from '../decorators/prop.decorator.js';
 
 export interface PropertyMetadata {
   target: Function;

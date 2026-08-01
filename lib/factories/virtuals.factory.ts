@@ -1,7 +1,8 @@
 import { Type } from '@nestjs/common';
-import { isUndefined } from '@nestjs/common/utils/shared.utils';
 import * as mongoose from 'mongoose';
-import { TypeMetadataStorage } from '../storages/type-metadata.storage';
+import { TypeMetadataStorage } from '../storages/type-metadata.storage.js';
+
+const isUndefined = (value: unknown): value is undefined => value === undefined;
 
 /**
  * @publicApi

@@ -1,5 +1,5 @@
 import { VirtualTypeOptions } from 'mongoose';
-import { TypeMetadataStorage } from '../storages/type-metadata.storage';
+import { TypeMetadataStorage } from '../storages/type-metadata.storage.js';
 
 /**
  * Interface defining the options that can be passed to the `@Virtual()` decorator.

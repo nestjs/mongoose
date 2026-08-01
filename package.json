@@ -5,8 +5,15 @@
   "author": "Kamil Mysliwiec",
   "repository": "https://github.com/nestjs/mongoose.git",
   "license": "MIT",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
     "lint": "oxlint --config oxlint.json lib/",
     "format": "prettier \"lib/**/*.ts\" --write",

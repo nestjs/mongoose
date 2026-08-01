@@ -1,3 +1,3 @@
-export * from './prop.decorator';
-export * from './schema.decorator';
-export * from './virtual.decorator';
+export * from './prop.decorator.js';
+export * from './schema.decorator.js';
+export * from './virtual.decorator.js';

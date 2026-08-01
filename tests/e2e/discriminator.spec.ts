@@ -2,17 +2,17 @@ import { DynamicModule, HttpStatus, INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'http';
 import request from 'supertest';
-import { MongooseModule } from '../../lib';
-import { EventModule } from '../src/event/event.module';
+import { MongooseModule } from '../../lib/index.js';
+import { EventModule } from '../src/event/event.module.js';
 import {
   ClickLinkEvent,
   ClieckLinkEventSchema,
-} from '../src/event/schemas/click-link-event.schema';
-import { Event, EventSchema } from '../src/event/schemas/event.schema';
+} from '../src/event/schemas/click-link-event.schema.js';
+import { Event, EventSchema } from '../src/event/schemas/event.schema.js';
 import {
   SignUpEvent,
   SignUpEventSchema,
-} from '../src/event/schemas/sign-up-event.schema';
+} from '../src/event/schemas/sign-up-event.schema.js';
 
 const testCase: [string, DynamicModule][] = [
   [

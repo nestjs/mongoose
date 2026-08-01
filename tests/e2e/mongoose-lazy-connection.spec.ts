@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Server } from 'http';
 import request from 'supertest';
-import { LazyAppModule } from '../src/lazy-app.module';
+import { LazyAppModule } from '../src/lazy-app.module.js';
 
 describe('Mongoose lazy connection', () => {
   let server: Server;
