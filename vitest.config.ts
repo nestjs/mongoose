@@ -14,5 +14,10 @@ export default defineConfig({
     sequence: {
       concurrent: false,
     },
+    typecheck: {
+      enabled: true,
+      include: ['tests/**/*.spec-d.ts'],
+      tsconfig: './tsconfig.typecheck.json',
+    },
   },
 });

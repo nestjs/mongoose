@@ -35,6 +35,21 @@ $ npm i --save @nestjs/mongoose mongoose
 
 [Overview & Tutorial](https://docs.nestjs.com/techniques/mongodb)
 
+## Typed model schema
+
+Since `mongoose@9`, the `schema` property of an injected `Model<T>` resolves to `any`, because Mongoose now types it through the model's `TSchema` generic. If you access `model.schema` and want it typed, use the opt-in `ModelWithSchema<T>` type instead of `Model<T>`. It is a drop-in replacement that declares `schema` as `Schema<T>` and leaves everything else unchanged:
+
+```typescript
+import { InjectModel, ModelWithSchema } from '@nestjs/mongoose';
+
+@Injectable()
+export class CatsService {
+  constructor(@InjectModel(Cat.name) private catModel: ModelWithSchema<Cat>) {}
+}
+```
+
+`ModelWithSchema` accepts the same query helpers, instance methods, and virtuals generics as `Model`, and behaves identically under `mongoose@7` and `mongoose@8`, where `schema` is typed out of the box.
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
