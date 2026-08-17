@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '../../../../lib';
-import { Event } from './event.schema';
+import { Prop, Schema, SchemaFactory } from '../../../../lib/index.js';
+import { Event } from './event.schema.js';
 
 @Schema({})
 export class SignUpEvent implements Event {

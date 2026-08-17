@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { Prop, Schema, SchemaFactory, Virtual } from '../../lib';
+import { Prop, Schema, SchemaFactory, Virtual } from '../../lib/index.js';
 
 @Schema({ validateBeforeSave: false, _id: true, autoIndex: true })
 class ChildClass {

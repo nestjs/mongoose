@@ -1,8 +1,8 @@
 import { Type } from '@nestjs/common';
-import { isUndefined } from '@nestjs/common/utils/shared.utils';
 import * as mongoose from 'mongoose';
-import { PropOptions } from '../decorators';
-import { TypeMetadataStorage } from '../storages/type-metadata.storage';
+import { PropOptions } from '../decorators/index.js';
+import { TypeMetadataStorage } from '../storages/type-metadata.storage.js';
+import { isUndefined } from '../utils/shared.utils.js';
 
 const BUILT_IN_TYPES: Function[] = [
   Boolean,

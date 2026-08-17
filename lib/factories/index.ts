@@ -1,3 +1,3 @@
-export * from './definitions.factory';
-export * from './schema.factory';
-export * from './virtuals.factory';
+export * from './definitions.factory.js';
+export * from './schema.factory.js';
+export * from './virtuals.factory.js';

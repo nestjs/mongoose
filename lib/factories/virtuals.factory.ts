@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
-import { isUndefined } from '@nestjs/common/utils/shared.utils';
 import * as mongoose from 'mongoose';
-import { TypeMetadataStorage } from '../storages/type-metadata.storage';
+import { TypeMetadataStorage } from '../storages/type-metadata.storage.js';
+import { isUndefined } from '../utils/shared.utils.js';
 
 /**
  * @publicApi
