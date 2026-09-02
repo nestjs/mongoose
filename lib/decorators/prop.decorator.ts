@@ -14,7 +14,7 @@ export type PropOptions<T = any> =
 /**
  * @Prop decorator is used to mark a specific class property as a Mongoose property.
  * Only properties decorated with this decorator will be defined in the schema.
- * 
+ *
  * @publicApi
  */
 export function Prop(options?: PropOptions): PropertyDecorator {
