@@ -41,7 +41,7 @@
     "lint-staged": "17.5.1",
     "mongoose": "9.10.1",
     "oxlint": "1.83.0",
-    "prettier": "3.9.7",
+    "prettier": "3.9.8",
     "reflect-metadata": "0.2.2",
     "release-it": "21.0.3",
     "rxjs": "7.8.2",
