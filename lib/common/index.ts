@@ -1,6 +1,2 @@
 export * from './mongoose.decorators.js';
-export {
-  getConnectionToken,
-  getModelToken,
-  getModuleOptionsToken,
-} from './mongoose.utils.js';
+export { getConnectionToken, getModelToken } from './mongoose.utils.js';

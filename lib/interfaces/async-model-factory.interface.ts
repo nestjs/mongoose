@@ -5,12 +5,8 @@ import { ModelDefinition } from './model-definition.interface.js';
  * @publicApi
  */
 export interface AsyncModelFactory
-  extends
-    Pick<ModuleMetadata, 'imports'>,
-    Pick<
-      ModelDefinition,
-      'name' | 'collection' | 'discriminators' | 'waitForModelInit'
-    > {
+  extends Pick<ModuleMetadata, 'imports'>,
+    Pick<ModelDefinition, 'name' | 'collection' | 'discriminators'> {
   useFactory: (
     ...args: any[]
   ) => ModelDefinition['schema'] | Promise<ModelDefinition['schema']>;

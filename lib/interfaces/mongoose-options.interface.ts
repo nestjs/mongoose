@@ -17,16 +17,6 @@ export interface MongooseModuleOptions extends ConnectOptions {
    * If `true`, will show verbose error messages on each connection retry.
    */
   verboseRetryLog?: boolean;
-  /**
-   * If `true`, model injection (via `@InjectModel()`) will wait for
-   * `Model#init()` to resolve before the model provider is considered
-   * ready, ensuring index building and other initialization has completed
-   * before the model can be used. Can be overridden per model via
-   * `ModelDefinition#waitForModelInit` or `AsyncModelFactory#waitForModelInit`.
-   *
-   * @default false
-   */
-  waitForModelInit?: boolean;
 }
 
 /**
@@ -49,10 +39,8 @@ export type MongooseModuleFactoryOptions = Omit<
 /**
  * @publicApi
  */
-export interface MongooseModuleAsyncOptions extends Pick<
-  ModuleMetadata,
-  'imports'
-> {
+export interface MongooseModuleAsyncOptions
+  extends Pick<ModuleMetadata, 'imports'> {
   connectionName?: string;
   useExisting?: Type<MongooseOptionsFactory>;
   useClass?: Type<MongooseOptionsFactory>;
