@@ -1,28 +1,7 @@
 import { Provider } from '@nestjs/common';
 import { Connection, Document, Model } from 'mongoose';
-import {
-  getConnectionToken,
-  getModelToken,
-  getModuleOptionsToken,
-} from './common/index.js';
-import {
-  AsyncModelFactory,
-  ModelDefinition,
-  MongooseModuleOptions,
-} from './interfaces/index.js';
-
-async function initModelIfNeeded<
-  TModel extends { init: () => Promise<unknown> },
->(
-  model: TModel,
-  waitForModelInit: boolean | undefined,
-  moduleOptions: MongooseModuleOptions | undefined,
-): Promise<TModel> {
-  if (waitForModelInit ?? moduleOptions?.waitForModelInit) {
-    await model.init();
-  }
-  return model;
-}
+import { getConnectionToken, getModelToken } from './common/mongoose.utils.js';
+import { AsyncModelFactory, ModelDefinition } from './interfaces/index.js';
 
 export function createMongooseProviders(
   connectionName?: string,
@@ -33,39 +12,19 @@ export function createMongooseProviders(
       ...providers,
       ...(option.discriminators || []).map((d) => ({
         provide: getModelToken(d.name, connectionName),
-        useFactory: (
-          model: Model<Document>,
-          moduleOptions: MongooseModuleOptions,
-        ) =>
-          initModelIfNeeded(
-            model.discriminator(d.name, d.schema, d.value),
-            d.waitForModelInit,
-            moduleOptions,
-          ),
-        inject: [
-          getModelToken(option.name, connectionName),
-          getModuleOptionsToken(connectionName),
-        ],
+        useFactory: (model: Model<Document>) =>
+          model.discriminator(d.name, d.schema, d.value),
+        inject: [getModelToken(option.name, connectionName)],
       })),
       {
         provide: getModelToken(option.name, connectionName),
-        useFactory: (
-          connection: Connection,
-          moduleOptions: MongooseModuleOptions,
-        ) => {
+        useFactory: (connection: Connection) => {
           const model = connection.models[option.name]
             ? connection.models[option.name]
             : connection.model(option.name, option.schema, option.collection);
-          return initModelIfNeeded(
-            model,
-            option.waitForModelInit,
-            moduleOptions,
-          );
+          return model;
         },
-        inject: [
-          getConnectionToken(connectionName),
-          getModuleOptionsToken(connectionName),
-        ],
+        inject: [getConnectionToken(connectionName)],
       },
     ],
     [] as Provider[],
@@ -81,44 +40,22 @@ export function createMongooseAsyncProviders(
       ...providers,
       {
         provide: getModelToken(option.name, connectionName),
-        useFactory: async (
-          connection: Connection,
-          moduleOptions: MongooseModuleOptions,
-          ...args: unknown[]
-        ) => {
+        useFactory: async (connection: Connection, ...args: unknown[]) => {
           const schema = await option.useFactory(...args);
           const model = connection.model(
             option.name,
             schema,
             option.collection,
           );
-          return initModelIfNeeded(
-            model,
-            option.waitForModelInit,
-            moduleOptions,
-          );
+          return model;
         },
-        inject: [
-          getConnectionToken(connectionName),
-          getModuleOptionsToken(connectionName),
-          ...(option.inject || []),
-        ],
+        inject: [getConnectionToken(connectionName), ...(option.inject || [])],
       },
       ...(option.discriminators || []).map((d) => ({
         provide: getModelToken(d.name, connectionName),
-        useFactory: (
-          model: Model<Document>,
-          moduleOptions: MongooseModuleOptions,
-        ) =>
-          initModelIfNeeded(
-            model.discriminator(d.name, d.schema, d.value),
-            d.waitForModelInit,
-            moduleOptions,
-          ),
-        inject: [
-          getModelToken(option.name, connectionName),
-          getModuleOptionsToken(connectionName),
-        ],
+        useFactory: (model: Model<Document>) =>
+          model.discriminator(d.name, d.schema, d.value),
+        inject: [getModelToken(option.name, connectionName)],
       })),
     ];
   }, [] as Provider[]);
