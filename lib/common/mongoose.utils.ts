@@ -1,7 +1,10 @@
 import { Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { delay, retryWhen, scan } from 'rxjs/operators';
-import { DEFAULT_DB_CONNECTION } from '../mongoose.constants.js';
+import {
+  DEFAULT_DB_CONNECTION,
+  MONGOOSE_MODULE_OPTIONS,
+} from '../mongoose.constants.js';
 
 /**
  * @publicApi
@@ -20,6 +23,20 @@ export function getConnectionToken(name?: string) {
   return name && name !== DEFAULT_DB_CONNECTION
     ? `${name}Connection`
     : DEFAULT_DB_CONNECTION;
+}
+
+/**
+ * Returns the injection token for the `MongooseModuleOptions` provider
+ * associated with a given connection, allowing consumers to access the
+ * options a given connection was configured with (e.g. `waitForModelInit`).
+ *
+ * @publicApi
+ */
+export function getModuleOptionsToken(connectionName?: string) {
+  if (connectionName === undefined) {
+    return MONGOOSE_MODULE_OPTIONS;
+  }
+  return `${getConnectionToken(connectionName)}/${MONGOOSE_MODULE_OPTIONS}`;
 }
 
 export function handleRetry(
