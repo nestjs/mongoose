@@ -200,11 +200,11 @@ export class MongooseCoreModule implements OnApplicationShutdown {
   ): Promise<Connection> {
     const connection = mongoose.createConnection(uri, mongooseOptions);
 
+    factoryOptions?.onConnectionCreate?.(connection);
+
     if (factoryOptions?.lazyConnection) {
       return connection;
     }
-
-    factoryOptions?.onConnectionCreate?.(connection);
 
     return connection.asPromise();
   }
