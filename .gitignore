@@ -17,3 +17,6 @@ npm-debug.log
 
 # dist
 dist
+
+# Claude Code
+.claude/worktrees/
