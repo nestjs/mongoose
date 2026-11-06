@@ -1,7 +1,16 @@
 {
   "name": "@nestjs/mongoose",
   "version": "12.0.0",
-  "description": "Nest - modern, fast, powerful node.js web framework (@mongoose)",
+  "description": "MongoDB for NestJS through Mongoose: schemas as decorated classes, injectable models, hooks and multiple connections.",
+  "keywords": [
+    "nestjs",
+    "nest",
+    "mongodb",
+    "mongoose",
+    "odm",
+    "database",
+    "nosql"
+  ],
   "author": "Kamil Mysliwiec",
   "repository": "https://github.com/nestjs/mongoose.git",
   "license": "MIT",
