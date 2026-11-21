@@ -48,7 +48,7 @@
     "@types/node": "24.19.2",
     "husky": "9.1.7",
     "lint-staged": "17.6.1",
-    "mongoose": "9.12.2",
+    "mongoose": "9.12.3",
     "oxlint": "1.94.0",
     "prettier": "3.10.1",
     "reflect-metadata": "0.2.2",
