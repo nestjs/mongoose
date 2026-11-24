@@ -17,6 +17,16 @@ export interface MongooseModuleOptions extends ConnectOptions {
    * If `true`, will show verbose error messages on each connection retry.
    */
   verboseRetryLog?: boolean;
+  /**
+   * If `true`, model providers wait for `Model.init()` (collection creation
+   * and index builds) before resolving, so a failed index build fails
+   * application startup instead of being ignored. Not applied while the
+   * connection is not open yet (e.g., with `lazyConnection`).
+   * Can be overridden per model with `ModelDefinition#waitForModelInit`.
+   *
+   * @default false
+   */
+  waitForModelInit?: boolean;
 }
 
 /**

@@ -12,7 +12,11 @@ import * as mongoose from 'mongoose';
 import { ConnectOptions, Connection } from 'mongoose';
 import { defer, lastValueFrom } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { getConnectionToken, handleRetry } from './common/mongoose.utils.js';
+import {
+  getConnectionToken,
+  getWaitForModelInitToken,
+  handleRetry,
+} from './common/mongoose.utils.js';
 import {
   MongooseModuleAsyncOptions,
   MongooseModuleFactoryOptions,
@@ -45,6 +49,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       lazyConnection,
       onConnectionCreate,
       verboseRetryLog,
+      waitForModelInit,
       ...mongooseOptions
     } = options;
 
@@ -59,6 +64,11 @@ export class MongooseCoreModule implements OnApplicationShutdown {
     const mongooseConnectionNameProvider = {
       provide: MONGOOSE_CONNECTION_NAME,
       useValue: mongooseConnectionName,
+    };
+
+    const waitForModelInitProvider = {
+      provide: getWaitForModelInitToken(connectionName),
+      useValue: !!waitForModelInit,
     };
 
     const connectionProvider = {
@@ -83,8 +93,12 @@ export class MongooseCoreModule implements OnApplicationShutdown {
     };
     return {
       module: MongooseCoreModule,
-      providers: [connectionProvider, mongooseConnectionNameProvider],
-      exports: [connectionProvider],
+      providers: [
+        connectionProvider,
+        mongooseConnectionNameProvider,
+        waitForModelInitProvider,
+      ],
+      exports: [connectionProvider, waitForModelInitProvider],
     };
   }
 
@@ -110,6 +124,7 @@ export class MongooseCoreModule implements OnApplicationShutdown {
           lazyConnection,
           onConnectionCreate,
           verboseRetryLog,
+          waitForModelInit: _waitForModelInit,
           ...mongooseOptions
         } = mongooseModuleOptions;
 
@@ -139,6 +154,12 @@ export class MongooseCoreModule implements OnApplicationShutdown {
       },
       inject: [MONGOOSE_MODULE_OPTIONS],
     };
+    const waitForModelInitProvider = {
+      provide: getWaitForModelInitToken(options.connectionName),
+      useFactory: (mongooseModuleOptions: MongooseModuleFactoryOptions) =>
+        !!mongooseModuleOptions.waitForModelInit,
+      inject: [MONGOOSE_MODULE_OPTIONS],
+    };
     const asyncProviders = this.createAsyncProviders(options);
     return {
       module: MongooseCoreModule,
@@ -147,8 +168,9 @@ export class MongooseCoreModule implements OnApplicationShutdown {
         ...asyncProviders,
         connectionProvider,
         mongooseConnectionNameProvider,
+        waitForModelInitProvider,
       ],
-      exports: [connectionProvider],
+      exports: [connectionProvider, waitForModelInitProvider],
     };
   }
 

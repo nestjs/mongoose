@@ -22,6 +22,10 @@ export function getConnectionToken(name?: string) {
     : DEFAULT_DB_CONNECTION;
 }
 
+export function getWaitForModelInitToken(connectionName?: string) {
+  return `${getConnectionToken(connectionName)}/WaitForModelInit`;
+}
+
 export function handleRetry(
   retryAttempts = 9,
   retryDelay = 3000,
