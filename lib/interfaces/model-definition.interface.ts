@@ -18,4 +18,9 @@ export type ModelDefinition = {
   schema: any;
   collection?: string;
   discriminators?: DiscriminatorOptions[];
+  /**
+   * Overrides `MongooseModuleOptions#waitForModelInit` for this model and
+   * its discriminators.
+   */
+  waitForModelInit?: boolean;
 };
