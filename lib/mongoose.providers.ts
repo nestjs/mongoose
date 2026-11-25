@@ -1,11 +1,15 @@
 import { Provider } from '@nestjs/common';
-import { Connection, Document, Model } from 'mongoose';
+import { Connection, Document, Error as MongooseError, Model } from 'mongoose';
 import {
   getConnectionToken,
   getModelToken,
   getWaitForModelInitToken,
 } from './common/mongoose.utils.js';
-import { AsyncModelFactory, ModelDefinition } from './interfaces/index.js';
+import {
+  AsyncModelFactory,
+  DiscriminatorOptions,
+  ModelDefinition,
+} from './interfaces/index.js';
 
 /**
  * With `waitForModelInit`, waits for `Model.init()` (collection creation and
@@ -28,6 +32,49 @@ function initModel<T extends { db: Connection; init(): Promise<unknown> }>(
   return model;
 }
 
+/**
+ * Compiles the model, or returns the one compiled by an earlier import of the
+ * same feature in the case where Mongoose refuses to compile it again.
+ */
+function getOrCompileModel(
+  connection: Connection,
+  name: string,
+  schema: ModelDefinition['schema'],
+  collection?: string,
+) {
+  try {
+    return connection.model(name, schema, collection);
+  } catch (err) {
+    if (err instanceof MongooseError.OverwriteModelError) {
+      return connection.models[name];
+    }
+    throw err;
+  }
+}
+
+/**
+ * Registers the discriminator, or returns the one registered by an earlier
+ * import of the same feature in the case where Mongoose would throw
+ * ("Discriminator with name ... already exists").
+ */
+function getOrCreateDiscriminator(
+  model: Model<Document>,
+  discriminator: DiscriminatorOptions,
+) {
+  const existing = model.discriminators?.[discriminator.name];
+  const overwriteModels =
+    discriminator.schema.options?.overwriteModels ??
+    model.schema.options?.overwriteModels;
+  if (existing && !overwriteModels) {
+    return existing;
+  }
+  return model.discriminator(
+    discriminator.name,
+    discriminator.schema,
+    discriminator.value,
+  );
+}
+
 export function createMongooseProviders(
   connectionName?: string,
   options: ModelDefinition[] = [],
@@ -43,7 +90,7 @@ export function createMongooseProviders(
         provide: getModelToken(d.name, connectionName),
         useFactory: (model: Model<Document>, waitForModelInit?: boolean) =>
           initModel(
-            model.discriminator(d.name, d.schema, d.value),
+            getOrCreateDiscriminator(model, d),
             option.waitForModelInit ?? waitForModelInit,
           ),
         inject: [
@@ -85,7 +132,8 @@ export function createMongooseAsyncProviders(
           ...args: unknown[]
         ) => {
           const schema = await option.useFactory(...args);
-          const model = connection.model(
+          const model = getOrCompileModel(
+            connection,
             option.name,
             schema,
             option.collection,
@@ -102,7 +150,7 @@ export function createMongooseAsyncProviders(
         provide: getModelToken(d.name, connectionName),
         useFactory: (model: Model<Document>, waitForModelInit?: boolean) =>
           initModel(
-            model.discriminator(d.name, d.schema, d.value),
+            getOrCreateDiscriminator(model, d),
             option.waitForModelInit ?? waitForModelInit,
           ),
         inject: [
