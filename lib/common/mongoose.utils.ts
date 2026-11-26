@@ -40,8 +40,10 @@ export function handleRetry(
             const verboseMessage = verboseRetryLog
               ? ` Message: ${error.message}.`
               : '';
-            const retryMessage =
-              retryAttempts > 0 ? ` Retrying (${errorCount + 1})...` : '';
+            const isLastAttempt = errorCount + 1 >= retryAttempts;
+            const retryMessage = isLastAttempt
+              ? ''
+              : ` Retrying (${errorCount + 1})...`;
 
             logger.error(
               [
@@ -51,7 +53,7 @@ export function handleRetry(
               ].join(''),
               error.stack,
             );
-            if (errorCount + 1 >= retryAttempts) {
+            if (isLastAttempt) {
               throw error;
             }
             return errorCount + 1;
