@@ -41,10 +41,12 @@ describe('Importing the same feature in several modules', () => {
     }).compile();
 
     return {
-      first: moduleRef.select(FirstFeatureModule).get<Model<any>>('MODEL_REF'),
+      first: moduleRef
+        .select(FirstFeatureModule)
+        .get<Model<any>>('MODEL_REF', { strict: true }),
       second: moduleRef
         .select(SecondFeatureModule)
-        .get<Model<any>>('MODEL_REF'),
+        .get<Model<any>>('MODEL_REF', { strict: true }),
     };
   }
 
